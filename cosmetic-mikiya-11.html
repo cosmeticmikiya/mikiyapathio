@@ -1,0 +1,1216 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>cosmetic mikiya｜須磨パティオのカウンセリング化粧品専門店</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Noto+Sans+JP:wght@300;400;500&family=Noto+Serif+JP:wght@400;500&display=swap" rel="stylesheet">
+<style>
+/* ================================================================
+   DESIGN TOKENS — 洗練・高級感・清潔感
+================================================================ */
+:root{
+  /* ライトパレット */
+  --c-white:       #FFFFFF;
+  --c-snow:        #F9F8F6;
+  --c-ivory:       #F4F1EC;
+  --c-mist:        #EDE9E4;
+  --c-aqua-bg:     #EBF5F8;
+
+  /* ダークパレット（ウォームグレー系） */
+  --c-charcoal:    #33302D;
+  --c-charcoal2:   #2A2724;
+  --c-dark2:       #201E1B;
+  --c-ink:         #28241F;
+  --c-mid:         #6E6762;
+  --c-pale:        #A8A09A;
+
+  /* ゴールド */
+  --c-gold:        #C8A05A;
+  --c-gold-bright: #DDB96A;
+  --c-gold-deep:   #A07840;
+  --c-gold-lt:     rgba(200,160,90,0.12);
+  --c-gold-mid:    rgba(200,160,90,0.30);
+  --c-gold-glow:   rgba(200,160,90,0.06);
+
+  /* グラデーション定義 */
+  --grad-hero:      linear-gradient(145deg, #2A2724 0%, #33302D 40%, #3D3733 70%, #2E2B27 100%);
+  --grad-section:   linear-gradient(180deg, #F9F8F6 0%, #F4F1EC 100%);
+  --grad-aqua:      linear-gradient(160deg, #EBF5F8 0%, #E4EFF5 50%, #EBF5F8 100%);
+  --grad-dark:      linear-gradient(145deg, #33302D 0%, #2A2724 60%, #302D2A 100%);
+  --grad-footer:    linear-gradient(180deg, #201E1B 0%, #1A1816 100%);
+  --grad-gold:      linear-gradient(90deg, var(--c-gold-deep), var(--c-gold-bright), var(--c-gold-deep));
+  --grad-gold-v:    linear-gradient(180deg, var(--c-gold-bright), var(--c-gold-deep));
+  --grad-card:      linear-gradient(160deg, #FFFFFF 0%, #F9F8F6 100%);
+  --grad-card-hover:linear-gradient(160deg, #F9F8F6 0%, #F2EDE7 100%);
+
+  /* シャドウ */
+  --sh-sm:   0 2px 8px rgba(30,24,18,0.06), 0 1px 2px rgba(30,24,18,0.04);
+  --sh-md:   0 8px 24px rgba(30,24,18,0.08), 0 2px 6px rgba(30,24,18,0.05);
+  --sh-lg:   0 20px 48px rgba(30,24,18,0.12), 0 4px 12px rgba(30,24,18,0.06);
+  --sh-gold: 0 4px 20px rgba(200,160,90,0.18);
+
+  /* ライン */
+  --c-line:    rgba(40,36,31,0.08);
+  --c-line-lt: rgba(255,255,255,0.12);
+
+  --font-serif: 'Noto Serif JP', serif;
+  --font-sans:  'Noto Sans JP', sans-serif;
+  --font-en:    'Cormorant Garamond', serif;
+
+  --hdr:  80px;
+  --maxw: 1160px;
+  --ease: cubic-bezier(.22,.61,.36,1);
+  --ease-spring: cubic-bezier(.34,1.56,.64,1);
+}
+
+/* ================================================================
+   BASE RESET
+================================================================ */
+*,*::before,*::after{ box-sizing:border-box; }
+html{ scroll-behavior:smooth; }
+body{
+  margin:0; background:var(--c-snow); color:var(--c-ink);
+  font-family:var(--font-sans); font-weight:400; line-height:1.85;
+  -webkit-font-smoothing:antialiased; overflow-x:hidden;
+}
+img,svg{ display:block; max-width:100%; }
+a{ color:inherit; text-decoration:none; }
+ul{ list-style:none; margin:0; padding:0; }
+h1,h2,h3,h4{ font-family:var(--font-serif); font-weight:500; margin:0; color:var(--c-ink); }
+p{ margin:0; }
+button{ font-family:inherit; cursor:pointer; border:none; background:none; }
+:focus-visible{ outline:2px solid var(--c-gold); outline-offset:3px; border-radius:1px; }
+
+.container{ width:100%; max-width:var(--maxw); margin:0 auto; padding:0 40px; }
+
+/* ================================================================
+   SECTION BACKGROUNDS — グラデーション背景
+================================================================ */
+.section        { padding:120px 0; }
+.section--tight { padding:88px 0; }
+.section--snow  { background:var(--grad-section); }
+.section--mist  { background:linear-gradient(160deg, #F0EDE9 0%, #E8E4DE 100%); }
+.section--aqua  { background:var(--grad-aqua); }
+.section--dark  {
+  background:var(--grad-dark);
+  color:rgba(255,255,255,0.82);
+}
+.section--dark h2,
+.section--dark h3,
+.section--dark h4{ color:rgba(255,255,255,0.95); }
+
+/* セパレーター — ゴールドグラデーションライン */
+.sep{
+  height:1px;
+  background:var(--grad-gold);
+  opacity:0.4;
+}
+
+/* ================================================================
+   EYEBROW & SECTION HEADS
+================================================================ */
+.eyebrow{
+  display:inline-flex; align-items:center; gap:14px;
+  font-family:var(--font-en); font-style:italic;
+  font-size:11.5px; letter-spacing:0.38em; text-transform:uppercase;
+  color:var(--c-gold); margin-bottom:22px;
+}
+.eyebrow .dash{
+  flex:0 0 36px; height:1px;
+  background:var(--grad-gold); opacity:0.7;
+}
+.section--dark .eyebrow{ color:var(--c-gold-bright); }
+
+.sec-head{ max-width:680px; margin-bottom:64px; }
+.sec-head h2{
+  font-size:clamp(26px,3.2vw,38px); letter-spacing:0.04em; line-height:1.5;
+  position:relative; padding-bottom:22px;
+}
+.sec-head h2::after{
+  content:''; position:absolute; left:0; bottom:0;
+  width:44px; height:2px;
+  background:var(--grad-gold);
+  border-radius:1px;
+}
+.sec-head p{ margin-top:20px; color:var(--c-mid); font-size:15px; line-height:2; }
+.section--dark .sec-head p{ color:rgba(255,255,255,0.5); }
+
+/* ================================================================
+   BUTTONS — グラデーション＋光沢
+================================================================ */
+.btn{
+  display:inline-flex; align-items:center; justify-content:center; gap:9px;
+  padding:14px 32px; font-family:var(--font-sans); font-size:13px;
+  font-weight:400; letter-spacing:0.12em; min-height:50px;
+  transition:all .35s var(--ease);
+  position:relative; overflow:hidden;
+}
+/* ボタン光沢オーバーレイ */
+.btn::before{
+  content:''; position:absolute; inset:0;
+  background:linear-gradient(160deg, rgba(255,255,255,0.08) 0%, transparent 60%);
+  pointer-events:none;
+}
+.btn--dark{
+  background:linear-gradient(145deg, #3D3733, #28241F);
+  color:var(--c-white); border:1px solid rgba(255,255,255,0.08);
+  box-shadow:var(--sh-md);
+}
+.btn--dark:hover{
+  background:linear-gradient(145deg, #4A4540, #332F2B);
+  transform:translateY(-2px); box-shadow:var(--sh-lg);
+}
+.btn--ghost{
+  background:rgba(255,255,255,0.6); backdrop-filter:blur(8px);
+  color:var(--c-ink); border:1px solid rgba(40,36,31,0.18);
+}
+.btn--ghost:hover{
+  background:var(--c-charcoal); color:var(--c-white);
+  border-color:transparent; transform:translateY(-1px);
+}
+.btn--ghost-lt{
+  background:rgba(255,255,255,0.06); backdrop-filter:blur(8px);
+  color:rgba(255,255,255,0.88); border:1px solid rgba(255,255,255,0.22);
+}
+.btn--ghost-lt:hover{
+  background:rgba(255,255,255,0.12);
+  border-color:rgba(255,255,255,0.5); transform:translateY(-1px);
+}
+.btn--ghost-lt-tel{
+  background:rgba(200,160,90,0.08); backdrop-filter:blur(8px);
+  color:var(--c-white); border:1px solid rgba(200,160,90,0.4);
+  font-family:var(--font-en); font-size:17px; letter-spacing:0.08em; font-weight:300; padding:13px 28px;
+}
+.btn--ghost-lt-tel:hover{
+  background:rgba(200,160,90,0.16);
+  border-color:var(--c-gold); color:var(--c-gold-bright);
+  transform:translateY(-1px);
+}
+
+/* ================================================================
+   HEADER — ガラスモーフィズム
+================================================================ */
+header{
+  position:fixed; top:0; left:0; right:0; z-index:100;
+  height:var(--hdr); display:flex; align-items:center;
+  background:linear-gradient(180deg, rgba(42,39,36,0.98) 0%, rgba(42,39,36,0.95) 100%);
+  border-bottom:1px solid rgba(255,255,255,0.06);
+  transition:height .4s var(--ease), background .4s var(--ease), box-shadow .4s var(--ease);
+}
+header.is-scrolled{
+  height:64px;
+  background:rgba(42,39,36,0.92);
+  backdrop-filter:blur(20px) saturate(1.4);
+  -webkit-backdrop-filter:blur(20px) saturate(1.4);
+  box-shadow:0 1px 0 rgba(255,255,255,0.07), 0 4px 24px rgba(0,0,0,0.2);
+}
+/* ヘッダー下端の細いゴールドライン */
+header::after{
+  content:''; position:absolute; bottom:0; left:10%; right:10%; height:1px;
+  background:var(--grad-gold); opacity:0.2;
+}
+header .container{ display:flex; align-items:center; justify-content:space-between; }
+
+.logo{ display:flex; flex-direction:column; line-height:1; gap:8px; }
+.logo .en{
+  font-family:var(--font-en); font-style:italic; font-weight:300;
+  font-size:21px; letter-spacing:0.1em; color:var(--c-white);
+  transition:opacity .3s;
+  /* テキストに微細なグラデーション */
+  background:linear-gradient(90deg, rgba(255,255,255,0.95), rgba(220,200,170,0.9));
+  -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text;
+}
+.logo:hover .en{ opacity:0.75; }
+.logo .jp{
+  font-family:var(--font-sans); font-size:9px; letter-spacing:0.35em;
+  font-weight:300; color:rgba(255,255,255,0.35);
+  -webkit-text-fill-color:rgba(255,255,255,0.35);
+}
+
+nav.primary-nav{ display:flex; align-items:center; gap:40px; }
+nav.primary-nav a{
+  font-size:12px; letter-spacing:0.16em; color:rgba(255,255,255,0.62);
+  position:relative; padding:4px 0; transition:color .3s var(--ease);
+}
+nav.primary-nav a::after{
+  content:''; position:absolute; left:0; right:100%; bottom:-3px; height:1px;
+  background:var(--grad-gold); transition:right .38s var(--ease);
+}
+nav.primary-nav a:hover{ color:rgba(255,255,255,0.95); }
+nav.primary-nav a:hover::after,
+nav.primary-nav a.is-active::after{ right:0; }
+
+.nav-toggle{
+  display:none; width:44px; height:44px;
+  align-items:center; justify-content:center; flex-direction:column; gap:5px; padding:0;
+}
+.nav-toggle span{
+  display:block; width:22px; height:1px; background:rgba(255,255,255,0.75);
+  transition:transform .3s var(--ease), opacity .3s var(--ease);
+}
+.nav-toggle.is-open span:nth-child(1){ transform:translateY(6px) rotate(45deg); }
+.nav-toggle.is-open span:nth-child(2){ opacity:0; }
+.nav-toggle.is-open span:nth-child(3){ transform:translateY(-6px) rotate(-45deg); }
+
+.mobile-nav{
+  position:fixed; inset:0; z-index:99;
+  background:linear-gradient(160deg, #2A2724 0%, #201E1B 100%);
+  display:flex; flex-direction:column; align-items:center; justify-content:center; gap:44px;
+  transform:translateX(100%); transition:transform .45s var(--ease);
+}
+.mobile-nav.is-open{ transform:translateX(0); }
+.mobile-nav a{
+  font-family:var(--font-serif); font-size:24px; letter-spacing:0.06em;
+  color:rgba(255,255,255,0.88); transition:color .3s;
+}
+.mobile-nav a:hover{ color:var(--c-gold-bright); }
+.mobile-nav .sub{ font-size:10px; letter-spacing:0.3em; color:rgba(255,255,255,0.22); font-weight:300; }
+
+/* ================================================================
+   HERO — 多層グラデーション＋光のエフェクト
+================================================================ */
+.hero{
+  position:relative; min-height:100svh;
+  display:flex; align-items:center;
+  background:var(--grad-hero);
+  color:var(--c-white);
+  overflow:hidden; padding-top:var(--hdr);
+}
+
+/* ヒーロー背景の光のグラデーション */
+.hero::after{
+  content:''; position:absolute; inset:0;
+  background:
+    radial-gradient(ellipse 60% 50% at 80% 20%, rgba(200,160,90,0.07) 0%, transparent 60%),
+    radial-gradient(ellipse 40% 60% at 10% 80%, rgba(200,160,90,0.04) 0%, transparent 50%);
+  pointer-events:none;
+}
+
+/* 背景テキスト */
+.hero-bg-text{
+  position:absolute; right:-3%; top:50%; transform:translateY(-50%);
+  font-family:var(--font-en); font-style:italic; font-weight:300;
+  font-size:clamp(120px,18vw,260px); line-height:0.85;
+  letter-spacing:-0.03em;
+  background:linear-gradient(180deg, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0.01) 100%);
+  -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text;
+  white-space:nowrap; pointer-events:none; user-select:none;
+}
+
+/* 斜めの装飾ライン */
+.hero-geo{
+  position:absolute; inset:0; pointer-events:none; overflow:hidden;
+}
+.hero-geo::before{
+  content:'';
+  position:absolute; top:-10%; right:18%; bottom:-10%; width:1px;
+  background:linear-gradient(to bottom,
+    transparent 0%, rgba(200,160,90,0.3) 30%,
+    rgba(200,160,90,0.3) 70%, transparent 100%);
+  transform:rotate(-8deg);
+}
+.hero-geo::after{
+  content:'';
+  position:absolute; top:-10%; right:22%; bottom:-10%; width:1px;
+  background:linear-gradient(to bottom,
+    transparent 0%, rgba(200,160,90,0.12) 40%,
+    rgba(200,160,90,0.12) 60%, transparent 100%);
+  transform:rotate(-8deg);
+}
+
+/* 左端縦ライン */
+.hero::before{
+  content:''; position:absolute; left:0; top:8%; bottom:8%; width:1px;
+  background:linear-gradient(to bottom,
+    transparent, var(--c-gold-bright) 30%, var(--c-gold-bright) 70%, transparent);
+  opacity:0.5;
+}
+
+.hero-inner{ position:relative; z-index:2; max-width:800px; }
+
+.hero-label{
+  font-family:var(--font-en); font-style:italic; font-size:11.5px;
+  letter-spacing:0.38em; color:rgba(255,255,255,0.38); margin-bottom:32px;
+  display:flex; align-items:center; gap:16px;
+}
+.hero-label::before{
+  content:''; display:block; width:40px; height:1px;
+  background:var(--grad-gold); opacity:0.55; flex-shrink:0;
+}
+
+/* 見出しにゴールドグラデーションテキスト */
+.hero h1{
+  font-family:var(--font-serif); font-weight:400;
+  font-size:clamp(32px,5.2vw,64px); line-height:1.6;
+  letter-spacing:0.06em; color:var(--c-white);
+}
+.hero h1 em{
+  font-style:normal;
+  background:linear-gradient(135deg, rgba(255,255,255,0.35) 0%, rgba(200,160,90,0.5) 100%);
+  -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text;
+}
+
+/* ゴールドルール */
+.hero-rule{ display:flex; align-items:center; gap:12px; margin:28px 0 30px; }
+.hero-rule .r-line{
+  width:48px; height:1px;
+  background:var(--grad-gold); opacity:0.6;
+}
+.hero-rule .r-dot{
+  width:4px; height:4px; border-radius:50%;
+  background:var(--c-gold-bright); opacity:0.7;
+  box-shadow:0 0 6px rgba(200,160,90,0.5);
+}
+
+.hero .lead{
+  font-size:14.5px; color:rgba(255,255,255,0.5);
+  max-width:500px; line-height:2.1; font-weight:300;
+}
+.hero .cta-row{ display:flex; gap:14px; margin-top:44px; flex-wrap:wrap; }
+
+.scroll-cue{
+  position:absolute; left:40px; bottom:40px; z-index:2;
+  display:flex; align-items:center; gap:12px;
+  font-family:var(--font-en); font-style:italic;
+  font-size:10.5px; letter-spacing:0.3em; color:rgba(255,255,255,0.25);
+}
+.scroll-cue .bar{
+  width:1px; height:48px; background:rgba(255,255,255,0.1); position:relative; overflow:hidden;
+}
+.scroll-cue .bar::after{
+  content:''; position:absolute; top:-100%; left:0; width:100%; height:100%;
+  background:var(--grad-gold); animation:scrollBar 2.8s ease-in-out infinite;
+}
+@keyframes scrollBar{ 0%{top:-100%} 65%{top:100%} 100%{top:100%} }
+
+/* ================================================================
+   NEWS — ガラス感＋ホバーグロー
+================================================================ */
+.news-list{ border-top:1px solid var(--c-line); }
+.news-item{
+  display:grid; grid-template-columns:260px 1fr 24px;
+  align-items:center; gap:20px; padding:22px 8px;
+  border-bottom:1px solid var(--c-line);
+  position:relative;
+  transition:padding-left .28s var(--ease), opacity .28s var(--ease), background .28s;
+  border-radius:4px;
+}
+.news-item::before{
+  content:''; position:absolute; left:0; top:0; bottom:0; width:2px;
+  background:var(--grad-gold-v); opacity:0;
+  transition:opacity .28s var(--ease);
+  border-radius:1px;
+}
+a.news-item:hover{
+  padding-left:14px; opacity:1;
+  background:linear-gradient(90deg, var(--c-gold-glow) 0%, transparent 60%);
+}
+a.news-item:hover::before{ opacity:1; }
+.news-item-meta{ display:flex; align-items:center; gap:14px; }
+.news-item time{
+  font-family:var(--font-en); font-size:13px; color:var(--c-pale);
+  letter-spacing:0.08em; white-space:nowrap;
+}
+.news-tag{
+  flex-shrink:0; font-size:10px; letter-spacing:0.12em;
+  border:1px solid var(--c-gold-mid); padding:3px 10px;
+  color:var(--c-gold); white-space:nowrap;
+  background:var(--c-gold-lt);
+}
+.news-item h3{
+  font-family:var(--font-sans); font-size:14px; font-weight:400;
+  color:var(--c-ink); line-height:1.65;
+  transition:color .28s;
+}
+a.news-item:hover h3{ color:var(--c-charcoal); }
+.news-arrow{
+  font-size:14px; justify-self:end; opacity:0.5;
+  background:var(--grad-gold);
+  -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text;
+  transition:transform .28s var(--ease), opacity .28s;
+}
+a.news-item:hover .news-arrow{ transform:translateX(4px); opacity:1; }
+.news-note{ margin-top:20px; font-size:11.5px; color:var(--c-pale); }
+
+/* ================================================================
+   CONCEPT — グラデーション背景＋装飾
+================================================================ */
+.concept-layout{
+  display:grid; grid-template-columns:1fr 340px; gap:80px; align-items:start;
+}
+/* 大きな引用符装飾 — グラデーション */
+.concept-quote-wrap{ position:relative; padding-top:48px; }
+.concept-quote-wrap::before{
+  content:'\201C';
+  position:absolute; top:-10px; left:-12px;
+  font-family:var(--font-en); font-size:120px; line-height:1;
+  background:var(--grad-gold); -webkit-background-clip:text;
+  -webkit-text-fill-color:transparent; background-clip:text;
+  opacity:0.18; font-weight:400; pointer-events:none;
+}
+.concept-quote{
+  font-family:var(--font-serif); font-weight:400;
+  font-size:clamp(19px,2.4vw,26px); line-height:2.2;
+  color:var(--c-ink); letter-spacing:0.04em;
+}
+.concept-quote strong{
+  color:var(--c-charcoal); font-weight:500;
+  text-decoration:underline;
+  text-decoration-color:var(--c-gold-mid);
+  text-underline-offset:6px;
+}
+.concept-body{
+  margin-top:32px; font-size:14.5px; color:var(--c-mid); line-height:2.1; font-weight:300;
+}
+.concept-aside{
+  display:flex; flex-direction:column; align-items:center; padding-top:60px; gap:32px;
+}
+.concept-aside-text{
+  writing-mode:vertical-rl; font-family:var(--font-serif);
+  font-size:13px; letter-spacing:0.25em; color:var(--c-pale); line-height:2.2;
+}
+.concept-aside-line{
+  width:1px; height:80px;
+  background:linear-gradient(to bottom, var(--c-gold-bright), transparent);
+  opacity:0.5;
+}
+.concept-aside-dot{
+  width:5px; height:5px; border-radius:50%;
+  background:var(--c-gold); opacity:0.6;
+  box-shadow:0 0 8px rgba(200,160,90,0.4);
+}
+
+/* ================================================================
+   BRANDS — シャドウカード＋グラデーション
+================================================================ */
+.brand-group + .brand-group{ margin-top:88px; }
+
+.brand-group-head{
+  display:flex; align-items:center; gap:0; margin-bottom:32px; position:relative;
+}
+.brand-group-head .num{
+  font-family:var(--font-en); font-style:italic; font-weight:300;
+  font-size:72px; line-height:1;
+  background:var(--grad-gold);
+  -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text;
+  opacity:0.12; margin-right:-8px; user-select:none; flex-shrink:0;
+}
+.brand-group-head .titles{ display:flex; flex-direction:column; gap:4px; }
+.brand-group-head .en{
+  font-family:var(--font-en); font-style:italic;
+  font-size:28px; color:var(--c-charcoal); letter-spacing:0.03em; font-weight:400;
+}
+.brand-group-head .jp{ font-size:12.5px; color:var(--c-pale); letter-spacing:0.1em; }
+.brand-group-head::after{
+  content:''; flex:1; height:1px; margin-left:20px;
+  background:linear-gradient(to right, var(--c-gold-mid), transparent);
+}
+
+/* グリッド — 隙間をグラデーションで表現 */
+.brand-grid{
+  display:grid; grid-template-columns:repeat(3,1fr); gap:2px;
+  background:linear-gradient(135deg, var(--c-gold-lt), var(--c-line));
+  border:1px solid rgba(200,160,90,0.12);
+  box-shadow:var(--sh-sm);
+}
+.brand-card{
+  background:var(--grad-card); padding:34px 28px; min-height:220px;
+  display:flex; flex-direction:column; position:relative; overflow:hidden;
+  transition:background .35s var(--ease), transform .35s var(--ease-spring), box-shadow .35s var(--ease);
+}
+/* カード右上の三角装飾 — グラデーション */
+.brand-card::after{
+  content:''; position:absolute; top:0; right:0;
+  width:0; height:0; border-style:solid;
+  border-width:0 32px 32px 0;
+  border-color:transparent rgba(200,160,90,0.1) transparent transparent;
+  transition:border-color .3s var(--ease);
+}
+/* カード上端のゴールドライン */
+.brand-card::before{
+  content:''; position:absolute; top:0; left:0; right:0; height:1px;
+  background:linear-gradient(90deg, transparent, rgba(200,160,90,0.3), transparent);
+  opacity:0;
+  transition:opacity .35s var(--ease);
+}
+.brand-card:hover{
+  background:var(--grad-card-hover);
+  transform:translateY(-4px);
+  box-shadow:var(--sh-md), var(--sh-gold);
+  z-index:1;
+}
+.brand-card:hover::after{ border-color:transparent rgba(200,160,90,0.28) transparent transparent; }
+.brand-card:hover::before{ opacity:1; }
+
+.brand-card .mark{
+  width:32px; height:32px; border-radius:50%;
+  border:1px solid var(--c-gold-mid); margin-bottom:16px;
+  display:flex; align-items:center; justify-content:center;
+  font-family:var(--font-en); font-style:italic; font-size:13px;
+  color:var(--c-gold); background:var(--c-gold-lt); flex-shrink:0;
+  transition:box-shadow .35s;
+}
+.brand-card:hover .mark{
+  box-shadow:0 0 12px rgba(200,160,90,0.25);
+}
+.brand-card h4{ font-size:15px; letter-spacing:0.03em; position:relative; display:inline-block; }
+.brand-card h4::after{
+  content:''; position:absolute; left:0; bottom:-3px; width:0; height:1px;
+  background:var(--grad-gold); transition:width .38s var(--ease);
+}
+.brand-card:hover h4::after{ width:100%; }
+.brand-card .en-name{
+  display:block; font-family:var(--font-en); font-style:italic;
+  font-size:11px; color:var(--c-pale); letter-spacing:0.08em; margin-top:3px;
+}
+.brand-card p{ margin-top:12px; font-size:13px; color:var(--c-mid); line-height:1.95; font-weight:300; }
+
+/* ================================================================
+   INSTAGRAM
+================================================================ */
+.insta-header{
+  display:flex; align-items:flex-end; justify-content:space-between;
+  gap:24px; flex-wrap:wrap; margin-bottom:36px;
+}
+.snapwidget-wrap{ width:100%; overflow:hidden; position:relative; }
+.snapwidget-wrap iframe{ display:block; width:765px !important; height:510px; max-width:none; transform-origin:top left; }
+
+/* ================================================================
+   SHOP INFO — グラデーション背景＋ガラス
+================================================================ */
+.section--dark{
+  background:var(--grad-dark);
+  /* 背景に微細なテクスチャ感 */
+  background-image:
+    var(--grad-dark),
+    radial-gradient(ellipse 80% 50% at 50% 0%, rgba(200,160,90,0.06) 0%, transparent 60%);
+}
+.shop-grid{ display:grid; grid-template-columns:1fr 1.08fr; gap:64px; align-items:start; }
+.shop-list{ border-top:1px solid var(--c-line-lt); }
+.shop-list dl{
+  display:grid; grid-template-columns:100px 1fr;
+  gap:6px 18px; padding:18px 0; border-bottom:1px solid var(--c-line-lt); margin:0;
+}
+.shop-list dt{
+  font-size:11px; letter-spacing:0.12em;
+  background:var(--grad-gold);
+  -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text;
+  opacity:0.9;
+}
+.shop-list dd{ margin:0; font-size:14.5px; color:rgba(255,255,255,0.88); line-height:1.85; }
+.shop-list dd a{ color:rgba(255,255,255,0.6); transition:color .2s; }
+.shop-list dd a:hover{ color:var(--c-gold-bright); }
+.shop-actions{ display:flex; gap:12px; margin-top:28px; flex-wrap:wrap; }
+
+.map-frame{
+  position:relative; width:100%; aspect-ratio:4/3.2;
+  border:1px solid rgba(255,255,255,0.08); overflow:hidden;
+  box-shadow:var(--sh-lg);
+}
+.map-frame iframe{ width:100%; height:100%; border:0; filter:saturate(0.55) brightness(0.85); }
+.map-fallback{
+  position:absolute; inset:0; display:none; flex-direction:column;
+  align-items:center; justify-content:center; gap:10px;
+  text-align:center; padding:24px; font-size:13px; color:rgba(255,255,255,0.5);
+}
+
+/* ================================================================
+   FOOTER — 深いグラデーション＋ゴールドアクセント
+================================================================ */
+footer{
+  background:var(--grad-footer);
+  color:rgba(255,255,255,0.42); padding:64px 0 28px;
+  position:relative;
+}
+/* フッター上端のゴールドライン */
+footer::before{
+  content:''; position:absolute; top:0; left:0; right:0; height:1px;
+  background:var(--grad-gold); opacity:0.25;
+}
+.footer-top{
+  display:flex; justify-content:space-between; gap:40px; flex-wrap:wrap;
+  padding-bottom:48px; border-bottom:1px solid rgba(255,255,255,0.07);
+}
+.footer-brand .en{
+  font-family:var(--font-en); font-style:italic; font-weight:300;
+  font-size:22px; letter-spacing:0.1em;
+  background:linear-gradient(90deg, rgba(255,255,255,0.92), rgba(220,190,140,0.85));
+  -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text;
+}
+.footer-brand .jp{
+  font-size:9px; letter-spacing:0.3em; color:rgba(255,255,255,0.28);
+  margin-top:10px; font-weight:300;
+  -webkit-text-fill-color:rgba(255,255,255,0.28);
+}
+.footer-brand .brand-line{
+  width:32px; height:1px; margin-top:14px;
+  background:var(--grad-gold); opacity:0.55;
+}
+.footer-cols{ display:flex; gap:64px; flex-wrap:wrap; }
+.footer-cols h5{
+  font-size:10px; letter-spacing:0.22em; text-transform:uppercase;
+  margin-bottom:18px; font-family:var(--font-sans); font-weight:400;
+  background:var(--grad-gold);
+  -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text;
+  opacity:0.9;
+}
+.footer-cols ul li{ margin-bottom:11px; font-size:13px; }
+.footer-cols ul li a:hover{ color:rgba(255,255,255,0.85); }
+.footer-bottom{
+  display:flex; justify-content:space-between; gap:16px; flex-wrap:wrap;
+  padding-top:24px; font-size:10.5px; color:rgba(255,255,255,0.22);
+}
+
+/* ================================================================
+   REVEAL（常時表示）
+================================================================ */
+.reveal{ opacity:1; transform:none; }
+.reveal.is-visible{ opacity:1; transform:none; }
+
+@media (prefers-reduced-motion:reduce){
+  html{ scroll-behavior:auto; }
+  .scroll-cue .bar::after{ animation:none; }
+  *{ transition-duration:0.01ms !important; animation-duration:0.01ms !important; }
+}
+
+/* ================================================================
+   RESPONSIVE
+================================================================ */
+@media (max-width:980px){
+  .concept-layout{ grid-template-columns:1fr; }
+  .concept-aside{ display:none; }
+  .shop-grid{ grid-template-columns:1fr; gap:44px; }
+  .brand-grid{ grid-template-columns:repeat(2,1fr); }
+  .footer-cols{ gap:40px; }
+}
+
+@media (max-width:760px){
+  :root{ --hdr:64px; }
+  .container{ padding:0 20px; }
+  .section{ padding:72px 0; }
+  .section--tight{ padding:56px 0; }
+  nav.primary-nav{ display:none; }
+  .nav-toggle{ display:flex; }
+  .hero::before{ display:none; }
+  .hero-geo{ display:none; }
+  .hero h1{ font-size:clamp(28px,8.5vw,40px); }
+  .hero .lead{ font-size:14px; }
+  .hero .cta-row{ flex-direction:column; gap:10px; }
+  .hero .cta-row .btn{ width:100%; justify-content:center; }
+  .scroll-cue{ left:20px; bottom:24px; }
+  .news-item{ display:flex; flex-direction:column; gap:8px; padding:18px 0; }
+  .news-item::before{ display:none; }
+  .news-arrow{ display:none; }
+  .news-item h3{ font-size:13.5px; }
+  .concept-quote-wrap::before{ font-size:80px; }
+  .brand-group-head .num{ font-size:48px; }
+  .brand-grid{ grid-template-columns:1fr; }
+  .brand-card{ padding:26px 22px; min-height:auto; }
+  .insta-header{ flex-direction:column; align-items:flex-start; gap:16px; }
+  .insta-header .btn{ width:100%; justify-content:center; }
+  .shop-list dl{ grid-template-columns:84px 1fr; }
+  .shop-list dt{ font-size:10px; }
+  .shop-list dd{ font-size:13px; }
+  .shop-actions{ flex-direction:column; }
+  .shop-actions .btn{ width:100%; justify-content:center; }
+  .btn--ghost-lt-tel{ font-size:15px; }
+  .footer-top{ flex-direction:column; gap:28px; }
+  .footer-cols{ flex-direction:column; gap:24px; }
+  .footer-bottom{ flex-direction:column; gap:6px; text-align:center; }
+}
+
+@media (max-width:800px){
+  .snapwidget-wrap{ position:relative; }
+}
+</style>
+</head>
+<body>
+
+<!-- ==================== HEADER ==================== -->
+<header id="siteHeader">
+  <div class="container">
+    <a href="#top" class="logo">
+      <span class="en">cosmetic mikiya</span>
+      <span class="jp">コ ス メ テ ィ ッ ク &nbsp; ミ キ ヤ</span>
+    </a>
+    <nav class="primary-nav" aria-label="主要ナビゲーション">
+      <a href="#concept" data-nav>コンセプト</a>
+      <a href="#brands" data-nav>ブランド</a>
+      <a href="#shop" data-nav>店舗案内</a>
+    </nav>
+    <button class="nav-toggle" id="navToggle" aria-label="メニューを開く" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</header>
+
+<div class="mobile-nav" id="mobileNav">
+  <a href="#concept" data-nav>コンセプト</a>
+  <a href="#brands" data-nav>ブランド</a>
+  <a href="#shop" data-nav>店舗案内</a>
+  <span class="sub">SUMA PATIO, KOBE</span>
+</div>
+
+<!-- ==================== HERO ==================== -->
+<section class="hero" id="top">
+  <span class="hero-bg-text" aria-hidden="true">mikiya</span>
+  <div class="hero-geo" aria-hidden="true"></div>
+  <div class="container hero-inner">
+    <p class="hero-label">COUNSELING COSMETICS — SUMA PATIO, KOBE</p>
+    <h1>
+      あなたの肌に、<br>
+      <em>特別な</em>寄り添いを。
+    </h1>
+    <div class="hero-rule">
+      <span class="r-line"></span>
+      <span class="r-dot"></span>
+    </div>
+    <p class="lead">
+      須磨パティオのカウンセリング化粧品専門店。<br>
+      30〜40代の肌悩みにじっくり向き合い、<br>プロフェッショナルがあなただけの美しさをご提案します。
+    </p>
+    <div class="cta-row">
+      <a href="#brands" class="btn btn--ghost-lt" data-nav>取り扱いブランドを見る</a>
+      <a href="#shop"   class="btn btn--ghost-lt" data-nav>店舗情報・アクセス</a>
+    </div>
+  </div>
+  <div class="scroll-cue"><span>SCROLL</span><span class="bar"></span></div>
+</section>
+
+<!-- ==================== NEWS ==================== -->
+<section class="section section--tight" id="news">
+  <div class="container">
+    <div class="sec-head reveal">
+      <span class="eyebrow"><span class="dash"></span>NEWS</span>
+      <h2>お知らせ</h2>
+    </div>
+    <ul class="news-list reveal" id="newsList"></ul>
+    <p class="news-note">※ 表示中の項目はサンプルです。本番環境では microCMS から取得した最新記事が自動的に反映されます。</p>
+  </div>
+</section>
+
+<!-- ==================== CONCEPT ==================== -->
+<section class="section section--aqua" id="concept">
+  <div class="container">
+    <span class="eyebrow reveal"><span class="dash"></span>CONCEPT</span>
+    <div class="concept-layout">
+      <div>
+        <div class="concept-quote-wrap">
+          <p class="concept-quote reveal">
+            私たちは、ただ化粧品を販売するのではありません。<br>
+            毎日がんばるあなたのお肌と心に向き合い、<br>
+            明日の<strong>『キレイ』</strong>を一緒に育むパートナーです。
+          </p>
+        </div>
+        <p class="concept-body reveal">
+          30〜40代から変化しやすいお肌のサインを見逃さず、ALBION・SHISEIDO・KOSE・KANEBOのプロフェッショナルなスキンケアから、あなただけの最適をご提案します。アットホームな雰囲気の中で、じっくりとお肌に向き合う時間をお過ごしいただけます。
+        </p>
+      </div>
+      <div class="concept-aside" aria-hidden="true">
+        <span class="concept-aside-line"></span>
+        <span class="concept-aside-text">cosmetic mikiya — Counseling Beauty — Suma Patio</span>
+        <span class="concept-aside-dot"></span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ==================== BRANDS ==================== -->
+<section class="section section--snow" id="brands">
+  <div class="container">
+    <div class="sec-head reveal">
+      <span class="eyebrow"><span class="dash"></span>BRANDS</span>
+      <h2>取り扱いブランド</h2>
+      <p>4大メーカーを中心に、プレステージブランドからプレミアムブランドまで、幅広く取り揃えています。</p>
+    </div>
+
+    <!-- SHISEIDO — 最初に配置、セクション見出しに水色ライン装飾 -->
+    <div class="brand-group reveal">
+      <div class="brand-group-head">
+        <span class="num">01</span>
+        <span class="titles"><span class="en">Shiseido</span><span class="jp">資生堂系列</span></span>
+      </div>
+      <div class="brand-grid">
+        <article class="brand-card">
+          <span class="mark">C</span>
+          <h4>クレ・ド・ポー ボーテ<span class="en-name">Clé de Peau Beauté</span></h4>
+          <p>資生堂の最高峰。肌の知性を呼び覚まし、内側から輝く気品ある肌へ導くラグジュアリースキンケア＆メイクアップ。</p>
+        </article>
+        <article class="brand-card">
+          <span class="mark">B</span>
+          <h4>ベネフィーク<span class="en-name">BENEFIQUE</span></h4>
+          <p>東洋の知恵と先進の皮膚科学を融合。肌・体・心をトータルに捉え、クリアで健やかな美しさを育むカウンセリングブランド。</p>
+        </article>
+        <article class="brand-card">
+          <span class="mark">I</span>
+          <h4>インウイ<span class="en-name">INOUI</span></h4>
+          <p>資生堂のメイクアップブランド。「素肌に宿る美しさ」をコンセプトに、肌そのものの美しさを際立たせる洗練されたカラーと処方。「内側からにじみ出るような美しさ」を表現します。</p>
+        </article>
+        <article class="brand-card">
+          <span class="mark">E</span>
+          <h4>エリクシール<span class="en-name">ELIXIR</span></h4>
+          <p>30代からのエイジングケア。肌に「つや玉」を輝かせ、毎日に自信をくれるスキンケアシリーズ。</p>
+        </article>
+        <article class="brand-card">
+          <span class="mark">M</span>
+          <h4>マキアージュ<span class="en-name">MAquillAGE</span></h4>
+          <p>ワンランク上の「キレイな素肌」を演出する、大人向けのトレンドメイクアップブランド。</p>
+        </article>
+        <article class="brand-card">
+          <span class="mark">D</span>
+          <h4>d program<span class="en-name">d program</span></h4>
+          <p>敏感肌のための資生堂ブランド。肌のバリア機能に着目し、敏感になった肌をやさしく整えるスキンケアシリーズ。</p>
+        </article>
+      </div>
+    </div>
+
+    <!-- ALBION -->
+    <div class="brand-group reveal">
+      <div class="brand-group-head">
+        <span class="num">02</span>
+        <span class="titles"><span class="en">Albion</span><span class="jp">アルビオン系列</span></span>
+      </div>
+      <div class="brand-grid">
+        <article class="brand-card">
+          <span class="mark">A</span>
+          <h4>ALBION<span class="en-name">Albion</span></h4>
+          <p>うるおいバランスを整える名品「薬用スキンコンディショナー」や、フラルネなどのエイジングケアライン。乳液先行型の独自処方で、年齢を重ねた肌を内側から整えます。</p>
+        </article>
+        <article class="brand-card">
+          <span class="mark">I</span>
+          <h4>イグニス<span class="en-name">IGNIS</span></h4>
+          <p>植物の力と心地よい香りで、肌本来の美しさを引き出すナチュラルスキンケアブランド。敏感な大人肌にも寄り添う穏やかな処方が特徴です。</p>
+        </article>
+        <article class="brand-card">
+          <span class="mark">E</span>
+          <h4>エレガンス<span class="en-name">Elegance</span></h4>
+          <p>「ラ プードル」をはじめとするメイクアップの仕上がりを極める、上品なラグジュアリーライン。華やかさと洗練された美しさを叶えます。</p>
+        </article>
+      </div>
+    </div>
+
+    <!-- KOSE -->
+    <div class="brand-group reveal">
+      <div class="brand-group-head">
+        <span class="num">03</span>
+        <span class="titles"><span class="en">Kosé</span><span class="jp">コーセー系列</span></span>
+      </div>
+      <div class="brand-grid">
+        <article class="brand-card">
+          <span class="mark">D</span>
+          <h4>コスメデコルテ<span class="en-name">DECORTÉ</span></h4>
+          <p>感性を磨くプレミアムブランド。植物の力と先進テクノロジーで、肌本来の輝きを引き出すスキンケア・メイクアップ。</p>
+        </article>
+        <article class="brand-card">
+          <span class="mark">S</span>
+          <h4>雪肌精<span class="en-name">SEKKISEI</span></h4>
+          <p>漢方美容水として誕生した透明感スキンケア。東洋ハーブの恵みで、くすみのない澄んだ素肌へ導きます。</p>
+        </article>
+        <article class="brand-card">
+          <span class="mark">O</span>
+          <h4>ONE BY KOSÉ<span class="en-name">One by Kosé</span></h4>
+          <p>先進美容成分をアクティブに届ける、大人の肌のアンチエイジングラインアップ。</p>
+        </article>
+      </div>
+    </div>
+
+    <!-- KANEBO -->
+    <div class="brand-group reveal">
+      <div class="brand-group-head">
+        <span class="num">04</span>
+        <span class="titles"><span class="en">Kanebo</span><span class="jp">カネボウ系列</span></span>
+      </div>
+      <div class="brand-grid">
+        <article class="brand-card">
+          <span class="mark">K</span>
+          <h4>KANEBO<span class="en-name">Kanebo</span></h4>
+          <p>感動の使い心地と確かな効果。高い品質と洗練されたデザインで、大人の女性の美しさを引き出すフラッグシップライン。</p>
+        </article>
+        <article class="brand-card">
+          <span class="mark">T</span>
+          <h4>トワニー<span class="en-name">TWANY</span></h4>
+          <p>大人の肌に贈るエイジングケア。肌の奥から活性化させるスキンケアで、ハリと輝きを長期的にサポートします。</p>
+        </article>
+        <article class="brand-card">
+          <span class="mark">L</span>
+          <h4>ルナソル<span class="en-name">LUNASOL</span></h4>
+          <p>自然な美しさを引き出す上質なメイクアップ。大人の素肌に映える洗練されたカラーとテクスチャー。</p>
+        </article>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ==================== INSTAGRAM ==================== -->
+<section class="section section--tight section--aqua" id="instagram">
+  <div class="container">
+    <div class="insta-header reveal">
+      <div>
+        <span class="eyebrow"><span class="dash"></span>INSTAGRAM</span>
+        <h2 style="font-size:clamp(22px,2.6vw,30px);">日々のキレイをのぞく</h2>
+      </div>
+      <a href="https://www.instagram.com/" target="_blank" rel="noopener" class="btn btn--ghost">@cosmetic_mikiya をフォロー</a>
+    </div>
+    <div class="snapwidget-wrap reveal">
+      <!-- SnapWidget -->
+      <iframe src="https://snapwidget.com/embed/1126108" class="snapwidget-widget" allowtransparency="true" frameborder="0" scrolling="no" style="border:none; overflow:hidden; width:765px; height:510px; max-width:100%;" title="Posts from Instagram"></iframe>
+    </div>
+  </div>
+</section>
+
+<!-- ==================== SHOP INFO ==================== -->
+<section class="section section--dark" id="shop">
+  <div class="container">
+    <div class="sec-head reveal">
+      <span class="eyebrow"><span class="dash"></span>SHOP INFO</span>
+      <h2>店舗案内・アクセス</h2>
+    </div>
+    <div class="shop-grid">
+      <div class="reveal">
+        <dl class="shop-list">
+          <div>
+            <dt>店舗名</dt>
+            <dd>cosmetic mikiya<br>
+              <span style="font-size:12.5px;color:rgba(255,255,255,0.4);">コスメティック ミキヤ</span>
+            </dd>
+          </div>
+          <div>
+            <dt>住所</dt>
+            <dd>〒654-0154<br>兵庫県神戸市須磨区中落合2丁目2-1<br>須磨パティオ内</dd>
+          </div>
+          <div>
+            <dt>アクセス</dt>
+            <dd>神戸市営地下鉄「名谷駅」より徒歩約5分</dd>
+          </div>
+          <div>
+            <dt>電話番号</dt>
+            <dd><a href="tel:0787918055">078-791-8055</a>
+            </dd>
+          </div>
+          <div>
+            <dt>営業時間</dt>
+            <dd>10:00〜20:00<br>
+              <span style="font-size:12px;color:rgba(255,255,255,0.38);">※須磨パティオの営業時間に準じます</span>
+            </dd>
+          </div>
+          <div>
+            <dt>定休日</dt>
+            <dd>不定休<br>
+              <span style="font-size:12px;color:rgba(255,255,255,0.38);">※須磨パティオの休館日に準じます</span>
+            </dd>
+          </div>
+        </dl>
+        <div class="shop-actions">
+          <a href="tel:0787918055" class="btn btn--ghost-lt-tel">☎ お電話でのお問い合わせ</a>
+        </div>
+        <div class="shop-actions" style="margin-top:12px;">
+          <a href="https://www.suma-patio.com" target="_blank" rel="noopener" class="btn btn--ghost-lt">須磨パティオ公式サイト</a>
+          <a href="https://www.google.com/maps/dir/?api=1&destination=%E9%A0%88%E7%A3%A8%E3%83%91%E3%83%86%E3%82%A3%E3%82%AA" target="_blank" rel="noopener" class="btn btn--ghost-lt">ルートを検索</a>
+        </div>
+      </div>
+      <div class="reveal">
+        <div class="map-frame">
+          <iframe
+            title="須磨パティオ 地図"
+            src="https://www.google.com/maps?q=%E9%A0%88%E7%A3%A8%E3%83%91%E3%83%86%E3%82%A3%E3%82%AA&output=embed"
+            loading="lazy"
+            referrerpolicy="no-referrer-when-downgrade"
+            onerror="this.closest('.map-frame').querySelector('.map-fallback').style.display='flex'"
+          ></iframe>
+          <div class="map-fallback">
+            <span>地図を読み込めませんでした。</span>
+            <a href="https://www.google.com/maps/search/%E9%A0%88%E7%A3%A8%E3%83%91%E3%83%86%E3%82%A3%E3%82%AA" target="_blank" rel="noopener" style="text-decoration:underline;color:rgba(255,255,255,0.5);">Googleマップで開く</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ==================== FOOTER ==================== -->
+<footer>
+  <div class="container">
+    <div class="footer-top">
+      <div class="footer-brand">
+        <div class="en">cosmetic mikiya</div>
+        <div class="jp">コ ス メ テ ィ ッ ク &nbsp; ミ キ ヤ</div>
+        <div class="brand-line"></div>
+      </div>
+      <div class="footer-cols">
+        <div>
+          <h5>SITE MAP</h5>
+          <ul>
+            <li><a href="#concept" data-nav>コンセプト</a></li>
+            <li><a href="#brands"  data-nav>取り扱いブランド</a></li>
+            <li><a href="#shop"    data-nav>店舗案内</a></li>
+          </ul>
+        </div>
+        <div>
+          <h5>SHOP</h5>
+          <ul>
+            <li>須磨パティオ内</li>
+            <li>神戸市須磨区中落合2丁目2-1</li>
+            <li>10:00〜20:00</li>
+          </ul>
+        </div>
+        <div>
+          <h5>SOCIAL</h5>
+          <ul>
+            <li><a href="https://www.instagram.com/" target="_blank" rel="noopener">Instagram</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span id="footerYear"></span>
+      <span>須磨パティオのカウンセリング化粧品専門店</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+(function(){
+  "use strict";
+
+  /* ---- 1. ヘッダー スクロール ---- */
+  var header = document.getElementById('siteHeader');
+  function onScroll(){ header.classList.toggle('is-scrolled', window.scrollY > 20); }
+  document.addEventListener('scroll', onScroll, { passive:true });
+  onScroll();
+
+  /* ---- 2. モバイルナビ ---- */
+  var toggle    = document.getElementById('navToggle');
+  var mobileNav = document.getElementById('mobileNav');
+  function closeMobileNav(){
+    toggle.classList.remove('is-open');
+    toggle.setAttribute('aria-expanded','false');
+    mobileNav.classList.remove('is-open');
+    document.body.style.overflow = '';
+  }
+  toggle.addEventListener('click', function(){
+    var open = mobileNav.classList.toggle('is-open');
+    toggle.classList.toggle('is-open', open);
+    toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+    document.body.style.overflow = open ? 'hidden' : '';
+  });
+  document.querySelectorAll('[data-nav]').forEach(function(a){
+    a.addEventListener('click', closeMobileNav);
+  });
+
+  /* ---- 3. アクティブナビ ---- */
+  var navLinks = document.querySelectorAll('nav.primary-nav a[href^="#"]');
+  var sectionIds = ['concept','brands','shop'];
+  if('IntersectionObserver' in window){
+    var navObs = new IntersectionObserver(function(entries){
+      entries.forEach(function(entry){
+        if(entry.isIntersecting){
+          navLinks.forEach(function(l){ l.classList.remove('is-active'); });
+          var m = document.querySelector('nav.primary-nav a[href="#'+entry.target.id+'"]');
+          if(m) m.classList.add('is-active');
+        }
+      });
+    }, { rootMargin:'-45% 0px -50% 0px' });
+    sectionIds.forEach(function(id){
+      var el = document.getElementById(id);
+      if(el) navObs.observe(el);
+    });
+  }
+
+  /* ---- 4. スクロール出現 — CSS側で常時表示のため処理不要 ---- */
+
+  /* ---- 5. お知らせ — microCMS API 取得（フィールド: title / date / tag）---- */
+  var MICROCMS_DOMAIN  = 'mikiyapathio';
+  var MICROCMS_API_KEY = 'MQfCc3YdhLQBgNGroOwTdHDuqTZEnnMZROpf';
+
+  /* microCMS のAPIフィールド設定:
+       title  : テキストフィールド（記事タイトル）
+       date   : 日付フィールド（公開日 例: 2026-06-20）
+       tag    : テキストまたはセレクトフィールド（例: お知らせ / 新商品入荷）
+  */
+
+  var FALLBACK_NEWS = [
+    { title:'クレ・ド・ポー ボーテ 新作コレクション入荷のご案内',    date:'2026-06-20', tag:'新商品入荷' },
+    { title:'夏のスキンケアカウンセリングフェアを開催します（〜7/31）', date:'2026-06-05', tag:'お知らせ'   },
+    { title:'須磨パティオ 設備点検にともなう臨時休業のお知らせ',       date:'2026-05-22', tag:'店休日'     },
+    { title:'ルナソル アイカラーコレクション 夏の新色が入荷しました',   date:'2026-05-10', tag:'新商品入荷' },
+  ];
+
+  function fmtDate(str){
+    var d = new Date(str);
+    return isNaN(d.getTime()) ? str
+      : d.getFullYear()+'.'+String(d.getMonth()+1).padStart(2,'0')+'.'+String(d.getDate()).padStart(2,'0');
+  }
+
+  function renderNews(items){
+    var list = document.getElementById('newsList');
+    if(!list) return;
+    list.innerHTML = items.map(function(item){
+      var title = item.title || '（タイトルなし）';
+      var date  = item.date  || item.publishedAt || '';
+      var tag   = item.tag   || (item.category && item.category.name) || 'お知らせ';
+      return '<li><a class="news-item" href="#">'
+        +'<div class="news-item-meta">'
+        +'<time>'+fmtDate(date)+'</time>'
+        +'<span class="news-tag">'+tag+'</span>'
+        +'</div>'
+        +'<h3>'+title+'</h3>'
+        +'<span class="news-arrow">→</span>'
+        +'</a></li>';
+    }).join('');
+  }
+
+  (function loadNews(){
+    var url = 'https://'+MICROCMS_DOMAIN+'.microcms.io/api/v1/news?limit=5&orders=-date&fields=title,date,tag';
+    fetch(url, { headers:{ 'X-MICROCMS-API-KEY': MICROCMS_API_KEY } })
+      .then(function(res){
+        if(!res.ok) throw new Error('HTTP '+res.status);
+        return res.json();
+      })
+      .then(function(data){
+        if(data.contents && data.contents.length){
+          renderNews(data.contents);
+          var note = document.querySelector('#news .news-note');
+          if(note) note.style.display = 'none';
+        } else {
+          renderNews(FALLBACK_NEWS);
+        }
+      })
+      .catch(function(){ renderNews(FALLBACK_NEWS); });
+  })();
+
+  /* ---- 6. SnapWidget レスポンシブスケール ---- */
+  (function scaleSnapWidget(){
+    var wrap = document.querySelector('.snapwidget-wrap');
+    var iframe = wrap && wrap.querySelector('iframe');
+    if(!wrap || !iframe) return;
+    function resize(){
+      var ww = wrap.offsetWidth;
+      var nativeW = 765;
+      var nativeH = 510;
+      if(ww < nativeW){
+        var scale = ww / nativeW;
+        iframe.style.transform = 'scale('+scale+')';
+        iframe.style.transformOrigin = 'top left';
+        wrap.style.height = Math.round(nativeH * scale)+'px';
+      } else {
+        iframe.style.transform = '';
+        iframe.style.transformOrigin = '';
+        wrap.style.height = '';
+      }
+    }
+    resize();
+    window.addEventListener('resize', resize, { passive:true });
+  })();
+
+  /* ---- 7. フッター年号 ---- */
+  var y = document.getElementById('footerYear');
+  if(y){ y.textContent = '© '+new Date().getFullYear()+' cosmetic mikiya'; }
+
+})();
+</script>
+</body>
+</html>
