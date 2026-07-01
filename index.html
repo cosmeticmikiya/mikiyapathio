@@ -569,15 +569,48 @@ a.news-item:hover .news-arrow{ transform:translateX(4px); opacity:1; }
 }
 .brand-card p{ margin-top:12px; font-size:13px; color:var(--c-mid); line-height:1.95; font-weight:300; }
 
+/* ブランドカード — タップで公式サイトへ */
+.brand-card{ position:relative; }
+.brand-card-link{
+  position:absolute; inset:0; z-index:2;
+  border-radius:inherit;
+}
+.brand-card-arrow{
+  margin-top:auto; padding-top:14px;
+  font-family:var(--font-en); font-size:13px; letter-spacing:0.1em;
+  background:var(--grad-gold);
+  -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text;
+  opacity:0; transition:opacity .3s var(--ease), transform .3s var(--ease);
+  display:block; align-self:flex-end;
+}
+.brand-card:hover .brand-card-arrow{ opacity:1; transform:translateX(4px); }
+
 /* ================================================================
-   INSTAGRAM
+   INSTAGRAM — SnapWidget スマホ完全対応
 ================================================================ */
 .insta-header{
   display:flex; align-items:flex-end; justify-content:space-between;
   gap:24px; flex-wrap:wrap; margin-bottom:36px;
 }
-.snapwidget-wrap{ width:100%; overflow:hidden; position:relative; }
-.snapwidget-wrap iframe{ display:block; width:765px !important; height:510px; max-width:none; transform-origin:top left; }
+.snapwidget-wrap{
+  width:100%;
+  overflow:hidden;
+  position:relative;
+}
+/* デスクトップ: 通常表示 */
+.snapwidget-wrap iframe{
+  display:block;
+  width:765px;
+  height:510px;
+  border:none;
+  transform-origin:top left;
+}
+/* スマホ: コンテナ幅に合わせてscaleで縮小 */
+@media (max-width:800px){
+  .snapwidget-wrap{
+    /* JSでheightを動的設定するのでここでは0 */
+  }
+}
 
 /* ================================================================
    SHOP INFO — グラデーション背景＋ガラス
@@ -771,10 +804,12 @@ footer::before{
     </div>
     <p class="lead">
       須磨パティオのカウンセリング化粧品専門店。<br>
-      30〜40代の肌悩みにじっくり向き合い、<br>プロフェッショナルがあなただけの美しさをご提案します。
+      一人ひとり異なる肌のお悩みやライフスタイルに寄り添い、<br>
+      美容の専門スタッフが、あなたに最適なお手入れと化粧品をご提案します。<br>
+      <span style="display:inline-block;margin-top:0.6em;">肌と心が元気になる。<br>そんな毎日を、ミキヤがお手伝いします。</span>
     </p>
     <div class="cta-row">
-      <a href="#brands" class="btn btn--ghost-lt" data-nav>取り扱いブランドを見る</a>
+      <a href="#brands" class="btn btn--ghost-lt" data-nav>ブランド line up を見る</a>
       <a href="#shop"   class="btn btn--ghost-lt" data-nav>店舗情報・アクセス</a>
     </div>
   </div>
@@ -807,7 +842,11 @@ footer::before{
           </p>
         </div>
         <p class="concept-body reveal">
-          30〜40代から変化しやすいお肌のサインを見逃さず、ALBION・SHISEIDO・KOSE・KANEBO・三香堂のプロフェッショナルなスキンケアから、あなただけの最適をご提案します。アットホームな雰囲気の中で、じっくりとお肌に向き合う時間をお過ごしいただけます。
+          肌は一人ひとり違い、年齢や季節、ライフスタイルによって変化していきます。<br>
+          だからこそ私たちは、お客様のお話を丁寧に伺い、その時の肌に本当に必要なお手入れや化粧品をご提案します。<br><br>
+          いつでも気軽に相談できる。<br>
+          これから先も、ずっと寄り添える。<br>
+          そんな地域の美容パートナーでありたいと、私たちは考えています。
         </p>
       </div>
       <div class="concept-aside" aria-hidden="true">
@@ -824,11 +863,11 @@ footer::before{
   <div class="container">
     <div class="sec-head reveal">
       <span class="eyebrow"><span class="dash"></span>BRANDS</span>
-      <h2>取り扱いブランド</h2>
-      <p>4大メーカーを中心に、プレステージブランドからプレミアムブランドまで、幅広く取り揃えています。</p>
+      <h2>ブランド line up</h2>
+      <p>資生堂・アルビオン・コーセー・カネボウをはじめ、専門店ならではのブランドを豊富に取り揃えています。<br>肌質やお悩み、なりたい肌に合わせて、あなたにぴったりのブランドをご提案します。</p>
     </div>
 
-    <!-- SHISEIDO — 最初に配置、セクション見出しに水色ライン装飾 -->
+    <!-- SHISEIDO -->
     <div class="brand-group reveal">
       <div class="brand-group-head">
         <span class="num">01</span>
@@ -836,34 +875,46 @@ footer::before{
       </div>
       <div class="brand-grid">
         <article class="brand-card">
+          <a href="https://www.cledepeau-beaute.com/jp/" target="_blank" rel="noopener" class="brand-card-link" aria-label="クレ・ド・ポー ボーテ 公式サイト"></a>
           <span class="mark">C</span>
           <h4>クレ・ド・ポー ボーテ<span class="en-name">Clé de Peau Beauté</span></h4>
           <p>資生堂の最高峰。肌の知性を呼び覚まし、内側から輝く気品ある肌へ導くラグジュアリースキンケア＆メイクアップ。</p>
+          <span class="brand-card-arrow">→</span>
         </article>
         <article class="brand-card">
+          <a href="https://www.shiseido.co.jp/benefique/?srsltid=AfmBOopvcykQHzP48rBLipQwHq43OAhqLZgIphhRUCckrPqW2czUKNxH" target="_blank" rel="noopener" class="brand-card-link" aria-label="ベネフィーク 公式サイト"></a>
           <span class="mark">B</span>
           <h4>ベネフィーク<span class="en-name">BENEFIQUE</span></h4>
           <p>東洋の知恵と先進の皮膚科学を融合。肌・体・心をトータルに捉え、クリアで健やかな美しさを育むカウンセリングブランド。</p>
+          <span class="brand-card-arrow">→</span>
         </article>
         <article class="brand-card">
+          <a href="https://inoui.shiseido.co.jp" target="_blank" rel="noopener" class="brand-card-link" aria-label="インウイ 公式サイト"></a>
           <span class="mark">I</span>
           <h4>インウイ<span class="en-name">INOUI</span></h4>
-          <p>資生堂のメイクアップブランド。「素肌に宿る美しさ」をコンセプトに、肌そのものの美しさを際立たせる洗練されたカラーと処方。「内側からにじみ出るような美しさ」を表現します。</p>
+          <p>資生堂のメイクアップブランド。「素肌に宿る美しさ」をコンセプトに、肌そのものの美しさを際立たせる洗練されたカラーと処方。</p>
+          <span class="brand-card-arrow">→</span>
         </article>
         <article class="brand-card">
+          <a href="https://www.shiseido.co.jp/elixir/index.html" target="_blank" rel="noopener" class="brand-card-link" aria-label="エリクシール 公式サイト"></a>
           <span class="mark">E</span>
           <h4>エリクシール<span class="en-name">ELIXIR</span></h4>
           <p>30代からのエイジングケア。肌に「つや玉」を輝かせ、毎日に自信をくれるスキンケアシリーズ。</p>
+          <span class="brand-card-arrow">→</span>
         </article>
         <article class="brand-card">
+          <a href="https://maquillage.shiseido.co.jp" target="_blank" rel="noopener" class="brand-card-link" aria-label="マキアージュ 公式サイト"></a>
           <span class="mark">M</span>
           <h4>マキアージュ<span class="en-name">MAquillAGE</span></h4>
           <p>ワンランク上の「キレイな素肌」を演出する、大人向けのトレンドメイクアップブランド。</p>
+          <span class="brand-card-arrow">→</span>
         </article>
         <article class="brand-card">
+          <a href="https://www.shiseido.co.jp/dprogram/?srsltid=AfmBOopMgPVpimP1Eq33xLDMVqdkjeCMJnA4fFMcV4qeRsdg_fey1oNn" target="_blank" rel="noopener" class="brand-card-link" aria-label="d program 公式サイト"></a>
           <span class="mark">D</span>
           <h4>d program<span class="en-name">d program</span></h4>
           <p>敏感肌のための資生堂ブランド。肌のバリア機能に着目し、敏感になった肌をやさしく整えるスキンケアシリーズ。</p>
+          <span class="brand-card-arrow">→</span>
         </article>
       </div>
     </div>
@@ -876,19 +927,25 @@ footer::before{
       </div>
       <div class="brand-grid">
         <article class="brand-card">
+          <a href="https://albion.co.jp/site/albion/c/c10/" target="_blank" rel="noopener" class="brand-card-link" aria-label="ALBION 公式サイト"></a>
           <span class="mark">A</span>
           <h4>ALBION<span class="en-name">Albion</span></h4>
           <p>うるおいバランスを整える名品「薬用スキンコンディショナー」や、フラルネなどのエイジングケアライン。乳液先行型の独自処方で、年齢を重ねた肌を内側から整えます。</p>
+          <span class="brand-card-arrow">→</span>
         </article>
         <article class="brand-card">
+          <a href="https://albion.co.jp/site/ignis/c/c30/" target="_blank" rel="noopener" class="brand-card-link" aria-label="IGNIS 公式サイト"></a>
           <span class="mark">I</span>
           <h4>イグニス<span class="en-name">IGNIS</span></h4>
           <p>植物の力と心地よい香りで、肌本来の美しさを引き出すナチュラルスキンケアブランド。敏感な大人肌にも寄り添う穏やかな処方が特徴です。</p>
+          <span class="brand-card-arrow">→</span>
         </article>
         <article class="brand-card">
+          <a href="https://albion.co.jp/site/elegance/c/c20/" target="_blank" rel="noopener" class="brand-card-link" aria-label="Elegance 公式サイト"></a>
           <span class="mark">E</span>
           <h4>エレガンス<span class="en-name">Elegance</span></h4>
           <p>「ラ プードル」をはじめとするメイクアップの仕上がりを極める、上品なラグジュアリーライン。華やかさと洗練された美しさを叶えます。</p>
+          <span class="brand-card-arrow">→</span>
         </article>
       </div>
     </div>
@@ -901,19 +958,25 @@ footer::before{
       </div>
       <div class="brand-grid">
         <article class="brand-card">
+          <a href="https://www.decorte.com/?srsltid=AfmBOoqmZth6oZ4mcEzMD2AYx4hLf9F4j3DgGVTaRFHYDGVEQWUw5rFV" target="_blank" rel="noopener" class="brand-card-link" aria-label="コスメデコルテ 公式サイト"></a>
           <span class="mark">D</span>
           <h4>コスメデコルテ<span class="en-name">DECORTÉ</span></h4>
           <p>感性を磨くプレミアムブランド。植物の力と先進テクノロジーで、肌本来の輝きを引き出すスキンケア・メイクアップ。</p>
+          <span class="brand-card-arrow">→</span>
         </article>
         <article class="brand-card">
+          <a href="https://sekkisei.jp/?srsltid=AfmBOorSkymteGF1WuMVenAqXhhqb7fNlFh4buj8D70YrJIGRnvg26xC" target="_blank" rel="noopener" class="brand-card-link" aria-label="雪肌精 公式サイト"></a>
           <span class="mark">S</span>
           <h4>雪肌精<span class="en-name">SEKKISEI</span></h4>
           <p>漢方美容水として誕生した透明感スキンケア。東洋ハーブの恵みで、くすみのない澄んだ素肌へ導きます。</p>
+          <span class="brand-card-arrow">→</span>
         </article>
         <article class="brand-card">
+          <a href="https://maison.kose.co.jp/site/onebykose/c/c54/?srsltid=AfmBOoqefxJofBDgI_P5yKWh05HKm0SUshxPYrQ6hqrtbqdAIiC0MIPq" target="_blank" rel="noopener" class="brand-card-link" aria-label="ONE BY KOSÉ 公式サイト"></a>
           <span class="mark">O</span>
           <h4>ONE BY KOSÉ<span class="en-name">One by Kosé</span></h4>
           <p>先進美容成分をアクティブに届ける、大人の肌のアンチエイジングラインアップ。</p>
+          <span class="brand-card-arrow">→</span>
         </article>
       </div>
     </div>
@@ -926,34 +989,56 @@ footer::before{
       </div>
       <div class="brand-grid">
         <article class="brand-card">
+          <a href="https://global.kanebo.com" target="_blank" rel="noopener" class="brand-card-link" aria-label="KANEBO 公式サイト"></a>
           <span class="mark">K</span>
           <h4>KANEBO<span class="en-name">Kanebo</span></h4>
           <p>感動の使い心地と確かな効果。高い品質と洗練されたデザインで、大人の女性の美しさを引き出すフラッグシップライン。</p>
+          <span class="brand-card-arrow">→</span>
         </article>
         <article class="brand-card">
+          <a href="https://www.kanebo-cosmetics.jp/twany/" target="_blank" rel="noopener" class="brand-card-link" aria-label="トワニー 公式サイト"></a>
           <span class="mark">T</span>
           <h4>トワニー<span class="en-name">TWANY</span></h4>
           <p>大人の肌に贈るエイジングケア。肌の奥から活性化させるスキンケアで、ハリと輝きを長期的にサポートします。</p>
+          <span class="brand-card-arrow">→</span>
         </article>
         <article class="brand-card">
+          <a href="https://www.lissage.jp" target="_blank" rel="noopener" class="brand-card-link" aria-label="LISSAGE 公式サイト"></a>
           <span class="mark">L</span>
           <h4>リサージ<span class="en-name">LISSAGE</span></h4>
-          <p>「肌本来の美しさを引き出す」をコンセプトに、独自の美容成分と処方で肌のコンディションを整えるスキンケアブランド。繊細な大人の肌に寄り添い、なりたい肌へ導きます。</p>
+          <p>「肌本来の美しさを引き出す」をコンセプトに、独自の美容成分と処方で肌のコンディションを整えるスキンケアブランド。</p>
+          <span class="brand-card-arrow">→</span>
         </article>
       </div>
     </div>
 
-    <!-- SANKODO -->
+    <!-- SPECIALTY BRANDS -->
     <div class="brand-group reveal">
       <div class="brand-group-head">
-        <span class="num">05</span>
-        <span class="titles"><span class="en">Sankodo</span><span class="jp">三香堂</span></span>
+        <span class="num" style="font-size:42px;opacity:0.08;">SP</span>
+        <span class="titles"><span class="en">Specialty Brands</span><span class="jp">専門店ならではのブランド</span></span>
       </div>
       <div class="brand-grid">
         <article class="brand-card">
+          <a href="https://www.hinoki.co.jp" target="_blank" rel="noopener" class="brand-card-link" aria-label="ヒノキ肌粧品 公式サイト"></a>
+          <span class="mark">H</span>
+          <h4>ヒノキ肌粧品<span class="en-name">Hinoki</span></h4>
+          <p>肌本来の力を大切に考え、健やかな肌環境へ導く薬用スキンケアブランド。敏感肌や肌トラブルに寄り添います。</p>
+          <span class="brand-card-arrow">→</span>
+        </article>
+        <article class="brand-card">
+          <a href="https://www.cher-couleur.com" target="_blank" rel="noopener" class="brand-card-link" aria-label="シェルクルール 公式サイト"></a>
+          <span class="mark">S</span>
+          <h4>シェルクルール<span class="en-name">Shell Couleur</span></h4>
+          <p>肌に必要なものだけを届ける、低刺激スキンケアブランド。やさしい使い心地で素肌を健やかに育みます。</p>
+          <span class="brand-card-arrow">→</span>
+        </article>
+        <article class="brand-card">
+          <a href="https://www.opal-co.co.jp" target="_blank" rel="noopener" class="brand-card-link" aria-label="オパール 公式サイト"></a>
           <span class="mark">O</span>
           <h4>オパール<span class="en-name">OPAL</span></h4>
-          <p>1956年誕生の日本が誇る美容液の先駆け。「塗る美容液」として長年愛され続ける三香堂の看板ブランド。独自の美容成分が肌にうるおいを与え、ハリとツヤのある透明感あふれる素肌へ導きます。世代を超えて受け継がれる、信頼と実績のロングセラーです。</p>
+          <p>世代を超えて愛され続ける美容原液。肌本来の美しさを引き出し、透明感とうるおいのある肌へ導きます。</p>
+          <span class="brand-card-arrow">→</span>
         </article>
       </div>
     </div>
@@ -971,9 +1056,9 @@ footer::before{
       </div>
       <a href="https://www.instagram.com/" target="_blank" rel="noopener" class="btn btn--ghost">@cosmetic_mikiya をフォロー</a>
     </div>
-    <div class="snapwidget-wrap reveal">
+    <div class="snapwidget-wrap reveal" id="snapwidgetWrap">
       <!-- SnapWidget -->
-      <iframe src="https://snapwidget.com/embed/1126108" class="snapwidget-widget" allowtransparency="true" frameborder="0" scrolling="no" style="border:none; overflow:hidden; width:765px; height:510px; max-width:100%;" title="Posts from Instagram"></iframe>
+      <iframe id="snapwidgetIframe" src="https://snapwidget.com/embed/1126108" class="snapwidget-widget" allowtransparency="true" frameborder="0" scrolling="no" title="Posts from Instagram"></iframe>
     </div>
   </div>
 </section>
@@ -1198,28 +1283,41 @@ footer::before{
       .catch(function(){ renderNews(FALLBACK_NEWS); });
   })();
 
-  /* ---- 6. SnapWidget レスポンシブスケール ---- */
-  (function scaleSnapWidget(){
-    var wrap = document.querySelector('.snapwidget-wrap');
-    var iframe = wrap && wrap.querySelector('iframe');
+  /* ---- 6. SnapWidget — スマホ完全対応スケール ---- */
+  (function(){
+    var NATIVE_W = 765;
+    var NATIVE_H = 510;
+    var wrap   = document.getElementById('snapwidgetWrap');
+    var iframe = document.getElementById('snapwidgetIframe');
     if(!wrap || !iframe) return;
+
     function resize(){
-      var ww = wrap.offsetWidth;
-      var nativeW = 765;
-      var nativeH = 510;
-      if(ww < nativeW){
-        var scale = ww / nativeW;
-        iframe.style.transform = 'scale('+scale+')';
-        iframe.style.transformOrigin = 'top left';
-        wrap.style.height = Math.round(nativeH * scale)+'px';
-      } else {
+      var w = wrap.clientWidth || wrap.offsetWidth;
+      if(!w) return;
+      if(w >= NATIVE_W){
+        /* デスクトップ: そのまま表示 */
+        iframe.style.width  = NATIVE_W + 'px';
+        iframe.style.height = NATIVE_H + 'px';
         iframe.style.transform = '';
-        iframe.style.transformOrigin = '';
-        wrap.style.height = '';
+        wrap.style.height  = NATIVE_H + 'px';
+      } else {
+        /* スマホ/タブレット: scale縮小 */
+        var scale = w / NATIVE_W;
+        iframe.style.width  = NATIVE_W + 'px';
+        iframe.style.height = NATIVE_H + 'px';
+        iframe.style.transform = 'scale(' + scale + ')';
+        iframe.style.transformOrigin = 'top left';
+        wrap.style.height  = Math.round(NATIVE_H * scale) + 'px';
       }
     }
+
+    /* 初回・リサイズ時・フォント読み込み後に実行 */
     resize();
     window.addEventListener('resize', resize, { passive:true });
+    if(document.fonts && document.fonts.ready){
+      document.fonts.ready.then(resize);
+    }
+    setTimeout(resize, 500);
   })();
 
   /* ---- 7. フッター年号 ---- */
