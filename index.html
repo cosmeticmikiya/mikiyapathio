@@ -392,8 +392,8 @@ nav.primary-nav a.is-active::after{ right:0; }
 ================================================================ */
 .news-list{ border-top:1px solid var(--c-line); }
 .news-item{
-  display:grid; grid-template-columns:260px 1fr 24px;
-  align-items:center; gap:20px; padding:22px 8px;
+  display:grid; grid-template-columns:auto 1fr 20px;
+  align-items:center; gap:16px; padding:20px 8px;
   border-bottom:1px solid var(--c-line);
   position:relative;
   transition:padding-left .28s var(--ease), opacity .28s var(--ease), background .28s;
@@ -410,31 +410,95 @@ a.news-item:hover{
   background:linear-gradient(90deg, var(--c-gold-glow) 0%, transparent 60%);
 }
 a.news-item:hover::before{ opacity:1; }
-.news-item-meta{ display:flex; align-items:center; gap:14px; }
+
+/* サムネイル */
+.news-thumb{
+  width:60px; height:60px; flex-shrink:0;
+  border-radius:3px; overflow:hidden;
+  background:var(--c-mist);
+  border:1px solid var(--c-line);
+  cursor:zoom-in;
+  transition:box-shadow .28s var(--ease), transform .28s var(--ease);
+  position:relative; z-index:2;
+}
+.news-thumb img{
+  width:100%; height:100%; object-fit:cover; display:block;
+  transition:transform .35s var(--ease);
+}
+.news-thumb:hover{ box-shadow:var(--sh-gold); transform:scale(1.04); }
+.news-thumb:hover img{ transform:scale(1.08); }
+.news-thumb-placeholder{
+  width:60px; height:60px; flex-shrink:0;
+  border-radius:3px;
+  background:transparent;
+}
+
+/* メタ情報（日付・タグ） */
+.news-item-meta{
+  display:flex; align-items:center; gap:10px;
+  flex-wrap:nowrap; flex-shrink:0;
+}
 .news-item time{
-  font-family:var(--font-en); font-size:13px; color:var(--c-pale);
-  letter-spacing:0.08em; white-space:nowrap;
+  font-family:var(--font-en); font-size:12.5px; color:var(--c-pale);
+  letter-spacing:0.06em; white-space:nowrap;
 }
 .news-tag{
-  flex-shrink:0; font-size:10px; letter-spacing:0.12em;
-  border:1px solid var(--c-gold-mid); padding:3px 10px;
+  flex-shrink:0; font-size:10px; letter-spacing:0.1em;
+  border:1px solid var(--c-gold-mid); padding:3px 9px;
   color:var(--c-gold); white-space:nowrap;
   background:var(--c-gold-lt);
 }
+.news-item-body{ min-width:0; }
 .news-item h3{
   font-family:var(--font-sans); font-size:14px; font-weight:400;
   color:var(--c-ink); line-height:1.65;
   transition:color .28s;
+  overflow-wrap:anywhere;
 }
 a.news-item:hover h3{ color:var(--c-charcoal); }
 .news-arrow{
-  font-size:14px; justify-self:end; opacity:0.5;
+  font-size:14px; justify-self:end; opacity:0.5; flex-shrink:0;
   background:var(--grad-gold);
   -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text;
   transition:transform .28s var(--ease), opacity .28s;
 }
 a.news-item:hover .news-arrow{ transform:translateX(4px); opacity:1; }
 .news-note{ margin-top:20px; font-size:11.5px; color:var(--c-pale); }
+
+/* ---- 画像モーダル ---- */
+.img-modal{
+  display:none; position:fixed; inset:0; z-index:1000;
+  background:rgba(20,18,15,0.88);
+  backdrop-filter:blur(6px); -webkit-backdrop-filter:blur(6px);
+  align-items:center; justify-content:center;
+  padding:24px;
+  cursor:zoom-out;
+}
+.img-modal.is-open{ display:flex; }
+.img-modal-inner{
+  position:relative; max-width:min(90vw,860px); max-height:90vh;
+  animation:modalIn .25s var(--ease) both;
+}
+@keyframes modalIn{
+  from{ opacity:0; transform:scale(0.92); }
+  to  { opacity:1; transform:scale(1); }
+}
+.img-modal-inner img{
+  display:block; max-width:100%; max-height:90vh;
+  border-radius:4px;
+  box-shadow:0 24px 64px rgba(0,0,0,0.5);
+  object-fit:contain;
+}
+.img-modal-close{
+  position:absolute; top:-14px; right:-14px;
+  width:36px; height:36px; border-radius:50%;
+  background:var(--c-charcoal); color:rgba(255,255,255,0.85);
+  border:1px solid rgba(255,255,255,0.15);
+  display:flex; align-items:center; justify-content:center;
+  font-size:18px; cursor:pointer;
+  transition:background .2s, transform .2s;
+}
+.img-modal-close:hover{ background:#555; transform:scale(1.1); }
 
 /* ================================================================
    CONCEPT — グラデーション背景＋装飾
@@ -735,10 +799,15 @@ footer::before{
   .hero .cta-row{ flex-direction:column; gap:10px; }
   .hero .cta-row .btn{ width:100%; justify-content:center; }
   .scroll-cue{ left:20px; bottom:24px; }
-  .news-item{ display:flex; flex-direction:column; gap:8px; padding:18px 0; }
+  .news-item{
+    display:grid; grid-template-columns:auto 1fr; gap:12px; padding:16px 0;
+  }
+  .news-item-meta{ flex-wrap:wrap; }
   .news-item::before{ display:none; }
   .news-arrow{ display:none; }
-  .news-item h3{ font-size:13.5px; }
+  .news-item h3{ font-size:13.5px; overflow-wrap:break-word; word-break:break-all; }
+  .news-thumb{ width:52px; height:52px; }
+  .news-thumb-placeholder{ width:52px; height:52px; }
   .concept-quote-wrap::before{ font-size:80px; }
   .brand-group-head .num{ font-size:48px; }
   .brand-grid{ grid-template-columns:1fr; }
@@ -809,7 +878,7 @@ footer::before{
       <span style="display:inline-block;margin-top:0.6em;">肌と心が元気になる。<br>そんな毎日を、ミキヤがお手伝いします。</span>
     </p>
     <div class="cta-row">
-      <a href="#brands" class="btn btn--ghost-lt" data-nav>ブランド line up を見る</a>
+      <a href="#brands" class="btn btn--ghost-lt" data-nav>取り扱いブランドを見る</a>
       <a href="#shop"   class="btn btn--ghost-lt" data-nav>店舗情報・アクセス</a>
     </div>
   </div>
@@ -863,7 +932,7 @@ footer::before{
   <div class="container">
     <div class="sec-head reveal">
       <span class="eyebrow"><span class="dash"></span>BRANDS</span>
-      <h2>ブランド line up</h2>
+      <h2>取り扱いブランド</h2>
       <p>資生堂・アルビオン・コーセー・カネボウをはじめ、専門店ならではのブランドを豊富に取り揃えています。<br>肌質やお悩み、なりたい肌に合わせて、あなたにぴったりのブランドをご提案します。</p>
     </div>
 
@@ -871,7 +940,7 @@ footer::before{
     <div class="brand-group reveal">
       <div class="brand-group-head">
         <span class="num">01</span>
-        <span class="titles"><span class="en">Shiseido</span><span class="jp">資生堂系列</span></span>
+        <span class="titles"><span class="en">Shiseido</span><span class="jp">資生堂 lineup</span></span>
       </div>
       <div class="brand-grid">
         <article class="brand-card">
@@ -923,7 +992,7 @@ footer::before{
     <div class="brand-group reveal">
       <div class="brand-group-head">
         <span class="num">02</span>
-        <span class="titles"><span class="en">Albion</span><span class="jp">アルビオン系列</span></span>
+        <span class="titles"><span class="en">Albion</span><span class="jp">Albion lineup</span></span>
       </div>
       <div class="brand-grid">
         <article class="brand-card">
@@ -954,7 +1023,7 @@ footer::before{
     <div class="brand-group reveal">
       <div class="brand-group-head">
         <span class="num">03</span>
-        <span class="titles"><span class="en">Kosé</span><span class="jp">コーセー系列</span></span>
+        <span class="titles"><span class="en">Kosé</span><span class="jp">KOSÉ lineup</span></span>
       </div>
       <div class="brand-grid">
         <article class="brand-card">
@@ -978,6 +1047,13 @@ footer::before{
           <p>先進美容成分をアクティブに届ける、大人の肌のアンチエイジングラインアップ。</p>
           <span class="brand-card-arrow">→</span>
         </article>
+        <article class="brand-card">
+          <a href="https://predia.jp/" target="_blank" rel="noopener" class="brand-card-link" aria-label="Predia 公式サイト"></a>
+          <span class="mark">P</span>
+          <h4>プレディア<span class="en-name">Predia</span></h4>
+          <p>海の恵みとスパの発想から生まれたスキンケアブランド。海由来の美容成分で、うるおいに満ちた健やかな肌へ。毎日のお手入れを、癒しのひとときへと導きます。</p>
+          <span class="brand-card-arrow">→</span>
+        </article>
       </div>
     </div>
 
@@ -985,16 +1061,9 @@ footer::before{
     <div class="brand-group reveal">
       <div class="brand-group-head">
         <span class="num">04</span>
-        <span class="titles"><span class="en">Kanebo</span><span class="jp">カネボウ系列</span></span>
+        <span class="titles"><span class="en">Kanebo</span><span class="jp">Kanebo lineup</span></span>
       </div>
       <div class="brand-grid">
-        <article class="brand-card">
-          <a href="https://global.kanebo.com" target="_blank" rel="noopener" class="brand-card-link" aria-label="KANEBO 公式サイト"></a>
-          <span class="mark">K</span>
-          <h4>KANEBO<span class="en-name">Kanebo</span></h4>
-          <p>感動の使い心地と確かな効果。高い品質と洗練されたデザインで、大人の女性の美しさを引き出すフラッグシップライン。</p>
-          <span class="brand-card-arrow">→</span>
-        </article>
         <article class="brand-card">
           <a href="https://www.kanebo-cosmetics.jp/twany/" target="_blank" rel="noopener" class="brand-card-link" aria-label="トワニー 公式サイト"></a>
           <span class="mark">T</span>
@@ -1109,7 +1178,7 @@ footer::before{
           <a href="tel:0787918055" class="btn btn--ghost-lt-tel">☎ お電話でのお問い合わせ</a>
         </div>
         <div class="shop-actions" style="margin-top:12px;">
-          <a href="https://www.suma-patio.com" target="_blank" rel="noopener" class="btn btn--ghost-lt">須磨パティオ公式サイト</a>
+          <a href="https://www.patio.gr.jp" target="_blank" rel="noopener" class="btn btn--ghost-lt">須磨パティオ公式サイト</a>
           <a href="https://www.google.com/maps/dir/?api=1&destination=%E9%A0%88%E7%A3%A8%E3%83%91%E3%83%86%E3%82%A3%E3%82%AA" target="_blank" rel="noopener" class="btn btn--ghost-lt">ルートを検索</a>
         </div>
       </div>
@@ -1223,15 +1292,9 @@ footer::before{
 
   /* ---- 4. スクロール出現 — CSS側で常時表示のため処理不要 ---- */
 
-  /* ---- 5. お知らせ — microCMS API 取得（フィールド: title / date / tag）---- */
+  /* ---- 5. お知らせ — microCMS API 取得 ---- */
   var MICROCMS_DOMAIN  = 'mikiyapathio';
   var MICROCMS_API_KEY = 'MQfCc3YdhLQBgNGroOwTdHDuqTZEnnMZROpf';
-
-  /* microCMS のAPIフィールド設定:
-       title  : テキストフィールド（記事タイトル）
-       date   : 日付フィールド（公開日 例: 2026-06-20）
-       tag    : テキストまたはセレクトフィールド（例: お知らせ / 新商品入荷）
-  */
 
   var FALLBACK_NEWS = [
     { title:'クレ・ド・ポー ボーテ 新作コレクション入荷のご案内',    date:'2026-06-20', tag:'新商品入荷' },
@@ -1253,20 +1316,63 @@ footer::before{
       var title = item.title || '（タイトルなし）';
       var date  = item.date  || item.publishedAt || '';
       var tag   = item.tag   || (item.category && item.category.name) || 'お知らせ';
-      return '<li><a class="news-item" href="#">'
-        +'<div class="news-item-meta">'
-        +'<time>'+fmtDate(date)+'</time>'
-        +'<span class="news-tag">'+tag+'</span>'
+      /* image フィールド（microCMS の画像型は {url, width, height} オブジェクト） */
+      var imgUrl = item.image && item.image.url ? item.image.url : '';
+      /* サムネイル部分 */
+      var thumbHtml = imgUrl
+        ? '<div class="news-thumb" data-src="'+imgUrl+'" role="button" tabindex="0" aria-label="画像を拡大">'
+            +'<img src="'+imgUrl+'?w=120&h=120&fit=crop" alt="'+title+'" loading="lazy">'
+          +'</div>'
+        : '<div class="news-thumb-placeholder"></div>';
+
+      return '<li>'
+        +'<a class="news-item" href="#">'
+        + thumbHtml
+        +'<div class="news-item-body">'
+          +'<div class="news-item-meta">'
+            +'<time>'+fmtDate(date)+'</time>'
+            +'<span class="news-tag">'+tag+'</span>'
+          +'</div>'
+          +'<h3>'+title+'</h3>'
         +'</div>'
-        +'<h3>'+title+'</h3>'
         +'<span class="news-arrow">→</span>'
-        +'</a></li>';
+        +'</a>'
+        +'</li>';
     }).join('');
+
+    /* サムネイルのクリック/タップでモーダルを開く */
+    list.querySelectorAll('.news-thumb').forEach(function(thumb){
+      function openModal(e){
+        e.preventDefault(); e.stopPropagation();
+        var src = thumb.getAttribute('data-src');
+        if(!src) return;
+        var modal = document.getElementById('imgModal');
+        var img   = document.getElementById('imgModalImg');
+        img.src = src;
+        img.alt = thumb.querySelector('img') ? thumb.querySelector('img').alt : '';
+        modal.classList.add('is-open');
+        document.body.style.overflow = 'hidden';
+      }
+      thumb.addEventListener('click', openModal);
+      thumb.addEventListener('keydown', function(e){
+        if(e.key === 'Enter' || e.key === ' '){ openModal(e); }
+      });
+    });
   }
 
+  /* フォールバックをまず即時表示（スマホでの初期表示を保証） */
+  renderNews(FALLBACK_NEWS);
+
   (function loadNews(){
-    var url = 'https://'+MICROCMS_DOMAIN+'.microcms.io/api/v1/news?limit=5&orders=-date&fields=title,date,tag';
-    fetch(url, { headers:{ 'X-MICROCMS-API-KEY': MICROCMS_API_KEY } })
+    /* fields に image を追加 */
+    var url = 'https://'+MICROCMS_DOMAIN+'.microcms.io/api/v1/news?limit=5&orders=-date&fields=title,date,tag,image';
+    fetch(url, {
+      headers:{
+        'X-MICROCMS-API-KEY': MICROCMS_API_KEY,
+        'Cache-Control': 'no-cache',
+      },
+      mode: 'cors',
+    })
       .then(function(res){
         if(!res.ok) throw new Error('HTTP '+res.status);
         return res.json();
@@ -1276,11 +1382,37 @@ footer::before{
           renderNews(data.contents);
           var note = document.querySelector('#news .news-note');
           if(note) note.style.display = 'none';
-        } else {
-          renderNews(FALLBACK_NEWS);
         }
       })
-      .catch(function(){ renderNews(FALLBACK_NEWS); });
+      .catch(function(){ /* FALLBACKのまま */ });
+  })();
+
+  /* ---- モーダルを閉じる処理 ---- */
+  (function(){
+    var modal     = document.getElementById('imgModal');
+    var closeBtn  = document.getElementById('imgModalClose');
+    var modalImg  = document.getElementById('imgModalImg');
+    if(!modal) return;
+
+    function closeModal(){
+      modal.classList.remove('is-open');
+      document.body.style.overflow = '';
+      /* 画像をリセット（次回開いたときに前の画像が一瞬見えないよう） */
+      setTimeout(function(){ modalImg.src = ''; }, 300);
+    }
+
+    /* 閉じるボタン */
+    closeBtn && closeBtn.addEventListener('click', function(e){
+      e.stopPropagation(); closeModal();
+    });
+    /* 背景クリックで閉じる */
+    modal.addEventListener('click', function(e){
+      if(e.target === modal) closeModal();
+    });
+    /* Escキーで閉じる */
+    document.addEventListener('keydown', function(e){
+      if(e.key === 'Escape' && modal.classList.contains('is-open')) closeModal();
+    });
   })();
 
   /* ---- 6. SnapWidget — スマホ完全対応スケール ---- */
@@ -1326,5 +1458,13 @@ footer::before{
 
 })();
 </script>
+<!-- ==================== IMAGE MODAL ==================== -->
+<div class="img-modal" id="imgModal" role="dialog" aria-modal="true" aria-label="画像を拡大表示">
+  <div class="img-modal-inner" id="imgModalInner">
+    <img id="imgModalImg" src="" alt="">
+    <button class="img-modal-close" id="imgModalClose" aria-label="閉じる">✕</button>
+  </div>
+</div>
+
 </body>
 </html>
