@@ -1311,6 +1311,15 @@ footer::before{
     { title:'リサージ 新作スキンケアライン入荷のご案内',              date:'2026-05-10', tag:'新商品入荷' },
   ];
 
+  function escapeHtml(str){
+    return String(str == null ? '' : str)
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#39;');
+  }
+
   function fmtDate(str){
     var d = new Date(str);
     return isNaN(d.getTime()) ? str
@@ -1328,8 +1337,8 @@ footer::before{
 
       /* サムネイル：画像ありはボタン、なしは空のプレースホルダー */
       var thumbHtml = imgUrl
-        ? '<button type="button" class="news-thumb" data-src="'+imgUrl+'" aria-label="画像を拡大する">'
-            +'<img src="'+imgUrl+'?w=128&h=128&fit=crop" alt="" loading="lazy">'
+        ? '<button type="button" class="news-thumb" data-src="'+escapeHtml(imgUrl)+'" aria-label="画像を拡大する">'
+            +'<img src="'+escapeHtml(imgUrl)+'?w=128&h=128&fit=crop" alt="" loading="lazy">'
           +'</button>'
         : '<div class="news-thumb-empty"></div>';
 
@@ -1337,10 +1346,10 @@ footer::before{
         + thumbHtml
         +'<div class="news-item-body">'
           +'<div class="news-item-meta">'
-            +'<time>'+fmtDate(date)+'</time>'
-            +'<span class="news-tag">'+tag+'</span>'
+            +'<time>'+escapeHtml(fmtDate(date))+'</time>'
+            +'<span class="news-tag">'+escapeHtml(tag)+'</span>'
           +'</div>'
-          +'<h3>'+title+'</h3>'
+          +'<h3>'+escapeHtml(title)+'</h3>'
         +'</div>'
         +'<span class="news-arrow">→</span>'
         +'</li>';
@@ -1384,7 +1393,10 @@ footer::before{
           if(note) note.style.display = 'none';
         }
       })
-      .catch(function(){ /* FALLBACKのまま */ });
+      .catch(function(err){
+        /* 取得失敗時はFALLBACKのまま表示。原因調査用にコンソールへ記録 */
+        console.error('microCMS news fetch failed:', err);
+      });
   })();
 
   /* ---- モーダルを閉じる処理 ---- */
