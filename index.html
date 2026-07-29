@@ -1374,11 +1374,10 @@ footer::before{
 
   (function loadNews(){
     /* fields に image を追加 */
-    var url = 'https://'+MICROCMS_DOMAIN+'.microcms.io/api/v1/news?limit=5&orders=-date&fields=title,date,tag,image';
+    var url = 'https://'+MICROCMS_DOMAIN+'.microcms.io/api/v1/news?limit=5&orders=-date&fields=title,date,tag,image&_='+Date.now();
     fetch(url, {
       headers:{
         'X-MICROCMS-API-KEY': MICROCMS_API_KEY,
-        'Cache-Control': 'no-cache',
       },
       mode: 'cors',
     })
