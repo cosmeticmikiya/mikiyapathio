@@ -499,6 +499,24 @@ a.news-item:hover h3{ color:var(--c-charcoal); }
   display:-webkit-box; -webkit-box-orient:vertical; -webkit-line-clamp:2;
   overflow:hidden;
 }
+/* 「さらに表示」で展開された状態 — 行数制限を解除して全文表示 */
+.news-item-desc.is-expanded{
+  -webkit-line-clamp:unset;
+  overflow:visible;
+}
+/* 実際に文章が省略されている記事だけ、JS側でis-visibleを付けて表示する */
+.news-desc-toggle{
+  display:none;
+  margin:4px 0 0; padding:0;
+  background:none; border:none;
+  font-family:var(--font-sans); font-size:11.5px; letter-spacing:0.04em;
+  color:var(--c-gold-deep);
+  text-decoration:underline; text-underline-offset:3px;
+  cursor:pointer;
+}
+.news-desc-toggle.is-visible{ display:inline-block; }
+.news-desc-toggle:hover{ color:var(--c-gold); }
+.news-desc-toggle:focus-visible{ outline:2px solid var(--c-gold); outline-offset:2px; }
 .news-note{ margin-top:20px; font-size:11.5px; color:var(--c-pale); }
 
 /* ---- 画像モーダル ---- */
@@ -1403,7 +1421,10 @@ footer::before{
           +'</button>'
         : '<div class="news-thumb-empty"></div>';
 
-      var descHtml = desc ? '<p class="news-item-desc">'+escapeHtml(desc)+'</p>' : '';
+      var descHtml = desc
+        ? '<p class="news-item-desc">'+escapeHtml(desc)+'</p>'
+          +'<button type="button" class="news-desc-toggle" aria-expanded="false">さらに表示</button>'
+        : '';
 
       return '<li class="news-item">'
         + thumbHtml
@@ -1417,6 +1438,23 @@ footer::before{
         +'</div>'
         +'</li>';
     }).join('');
+
+    /* 説明文が実際に行数制限で省略されている記事だけ「さらに表示」ボタンを見せる */
+    list.querySelectorAll('.news-item-desc').forEach(function(p){
+      var btn = p.nextElementSibling;
+      if(!btn || !btn.classList.contains('news-desc-toggle')) return;
+      var isTruncated = p.scrollHeight - p.clientHeight > 1;
+      if(!isTruncated){
+        btn.remove();
+        return;
+      }
+      btn.classList.add('is-visible');
+      btn.addEventListener('click', function(){
+        var expanded = p.classList.toggle('is-expanded');
+        btn.textContent = expanded ? '閉じる' : 'さらに表示';
+        btn.setAttribute('aria-expanded', expanded ? 'true' : 'false');
+      });
+    });
 
     /* サムネイルクリックでモーダルを開く */
     list.querySelectorAll('.news-thumb[data-src]').forEach(function(thumb){
