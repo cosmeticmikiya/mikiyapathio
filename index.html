@@ -393,7 +393,7 @@ nav.primary-nav a.is-active::after{ right:0; }
 .news-list{ border-top:1px solid var(--c-line); }
 .news-item{
   display:grid;
-  grid-template-columns:64px 1fr 20px;
+  grid-template-columns:64px 1fr;
   align-items:center; gap:16px; padding:20px 8px;
   border-bottom:1px solid var(--c-line);
   position:relative;
@@ -415,27 +415,53 @@ li.news-item:hover{
 a.news-item:hover::before,
 li.news-item:hover::before{ opacity:1; }
 
-/* サムネイル */
+/* サムネイル ＝ 唯一のタップ対象（拡大表示）
+   ホバーできないスマホでも「押せる」と伝わるよう、
+   ゴールドの細枠＋虫めがねバッジを常時表示する */
 .news-thumb{
   width:64px; height:64px; flex-shrink:0;
   border-radius:4px; overflow:hidden;
   background:var(--c-mist);
-  border:1px solid var(--c-line);
+  border:1px solid var(--c-gold-mid);
   cursor:zoom-in;
-  transition:box-shadow .28s var(--ease), transform .28s var(--ease);
+  transition:box-shadow .28s var(--ease), transform .28s var(--ease), border-color .28s var(--ease);
   position:relative; z-index:3;
   display:block;
   padding:0; /* buttonのデフォルトpadをリセット */
+  -webkit-tap-highlight-color:transparent;
 }
 .news-thumb img{
   width:100%; height:100%; object-fit:cover; display:block;
   transition:transform .35s var(--ease);
   pointer-events:none;
 }
+/* 常時表示の虫めがねバッジ（ホバー非依存のアフォーダンス）
+   ※ data URI 内では CSS変数が使えないため、線色は --c-gold-bright と同値の #DDB96A を直書き */
+.news-thumb::after{
+  content:'';
+  position:absolute; right:4px; bottom:4px;
+  width:20px; height:20px; border-radius:50%;
+  background-color:rgba(32,30,27,0.55);
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23DDB96A' stroke-width='2.4' stroke-linecap='round'%3E%3Ccircle cx='10.5' cy='10.5' r='6.5'/%3E%3Cline x1='15.6' y1='15.6' x2='21' y2='21'/%3E%3C/svg%3E");
+  background-repeat:no-repeat; background-position:center;
+  background-size:11px 11px;
+  border:1px solid var(--c-gold-mid);
+  box-shadow:0 1px 4px rgba(30,24,18,0.28);
+  pointer-events:none;
+  transition:background-color .28s var(--ease), border-color .28s var(--ease);
+}
 .news-thumb:hover{
   box-shadow:var(--sh-gold); transform:scale(1.05);
+  border-color:var(--c-gold);
 }
-/* 画像なし記事のプレースホルダー（グリッドの1列目を埋める） */
+.news-thumb:hover::after{
+  background-color:rgba(32,30,27,0.82);
+  border-color:var(--c-gold);
+}
+.news-thumb:active{ transform:scale(0.96); }
+.news-thumb:focus-visible{ outline:2px solid var(--c-gold); outline-offset:2px; }
+/* 画像なし記事のプレースホルダー（グリッドの1列目を埋める）
+   拡大するものが無いので、枠・バッジ等のタップ可能に見える装飾は一切付けない */
 .news-thumb-empty{
   width:64px; height:64px;
 }
@@ -464,13 +490,15 @@ li.news-item:hover::before{ opacity:1; }
 }
 a.news-item:hover h3{ color:var(--c-charcoal); }
 
-.news-arrow{
-  font-size:14px; opacity:0.5; flex-shrink:0; justify-self:end;
-  background:var(--grad-gold);
-  -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text;
-  transition:transform .28s var(--ease), opacity .28s;
+/* 本文・説明文（microCMS側に任意のフリーテキスト項目が追加された場合のみ表示） */
+.news-item-desc{
+  margin:6px 0 0;
+  font-family:var(--font-sans); font-size:12.5px; line-height:1.7;
+  color:var(--c-mid);
+  overflow-wrap:break-word; word-break:break-word;
+  display:-webkit-box; -webkit-box-orient:vertical; -webkit-line-clamp:2;
+  overflow:hidden;
 }
-a.news-item:hover .news-arrow{ transform:translateX(4px); opacity:1; }
 .news-note{ margin-top:20px; font-size:11.5px; color:var(--c-pale); }
 
 /* ---- 画像モーダル ---- */
@@ -812,10 +840,13 @@ footer::before{
     gap:12px; padding:16px 0;
   }
   .news-thumb{ width:52px; height:52px; }
+  .news-thumb::after{
+    right:3px; bottom:3px; width:17px; height:17px; background-size:10px 10px;
+  }
   .news-thumb-empty{ width:52px; height:52px; }
   .news-item::before{ display:none; }
-  .news-arrow{ display:none; }
   .news-item h3{ font-size:13.5px; }
+  .news-item-desc{ font-size:12px; -webkit-line-clamp:3; }
   .concept-quote-wrap::before{ font-size:80px; }
   .brand-group-head .num{ font-size:48px; }
   .brand-grid{ grid-template-columns:1fr; }
@@ -1250,6 +1281,18 @@ footer::before{
   </div>
 </footer>
 
+<!-- ==================== IMAGE MODAL ====================
+     ※ このブロックは必ず下のスクリプトより前に置くこと。
+     スクリプトは即時実行（IIFE）で閉じるボタン等のイベントを登録するため、
+     この div がスクリプトより後ろにあると getElementById('imgModal') が null になり、
+     モーダルを閉じる処理が一切登録されない（＝✕・背景・Escで閉じられなくなる）。 -->
+<div class="img-modal" id="imgModal" role="dialog" aria-modal="true" aria-label="画像を拡大表示">
+  <div class="img-modal-inner" id="imgModalInner">
+    <img id="imgModalImg" src="" alt="">
+    <button class="img-modal-close" id="imgModalClose" aria-label="閉じる">✕</button>
+  </div>
+</div>
+
 <script>
 (function(){
   "use strict";
@@ -1326,6 +1369,23 @@ footer::before{
       : d.getFullYear()+'.'+String(d.getMonth()+1).padStart(2,'0')+'.'+String(d.getDate()).padStart(2,'0');
   }
 
+  /* microCMS側にあとから本文系のフリーテキスト項目が追加された場合に備え、
+     よくある項目名を順番に探して、最初に見つかった非空のものを表示する。
+     どれも無ければ何も追加しない（＝現在の記事の見た目は変わらない） */
+  var DESC_KEYS = ['description','body','content','text','detail','note'];
+
+  function pickDescription(item){
+    for(var i=0; i<DESC_KEYS.length; i++){
+      var v = item[DESC_KEYS[i]];
+      if(typeof v !== 'string' && typeof v !== 'number') continue;
+      /* リッチエディタ項目はHTML文字列で返るため、タグを外して素のテキストにする
+         （この後 escapeHtml() でエスケープするので安全） */
+      var t = String(v).replace(/<[^>]*>/g, ' ').replace(/\s+/g, ' ').trim();
+      if(t) return t;
+    }
+    return '';
+  }
+
   function renderNews(items){
     var list = document.getElementById('newsList');
     if(!list) return;
@@ -1334,13 +1394,16 @@ footer::before{
       var date   = item.date  || item.publishedAt || '';
       var tag    = item.tag   || (item.category && item.category.name) || 'お知らせ';
       var imgUrl = item.image && item.image.url ? item.image.url : '';
+      var desc   = pickDescription(item);
 
-      /* サムネイル：画像ありはボタン、なしは空のプレースホルダー */
+      /* サムネイル：画像ありはボタン（虫めがねバッジ付き）、なしは空のプレースホルダー */
       var thumbHtml = imgUrl
         ? '<button type="button" class="news-thumb" data-src="'+escapeHtml(imgUrl)+'" aria-label="画像を拡大する">'
             +'<img src="'+escapeHtml(imgUrl)+'?w=128&h=128&fit=crop" alt="" loading="lazy">'
           +'</button>'
         : '<div class="news-thumb-empty"></div>';
+
+      var descHtml = desc ? '<p class="news-item-desc">'+escapeHtml(desc)+'</p>' : '';
 
       return '<li class="news-item">'
         + thumbHtml
@@ -1350,8 +1413,8 @@ footer::before{
             +'<span class="news-tag">'+escapeHtml(tag)+'</span>'
           +'</div>'
           +'<h3>'+escapeHtml(title)+'</h3>'
+          + descHtml
         +'</div>'
-        +'<span class="news-arrow">→</span>'
         +'</li>';
     }).join('');
 
@@ -1373,8 +1436,14 @@ footer::before{
   renderNews(FALLBACK_NEWS);
 
   (function loadNews(){
-    /* fields に image を追加 */
-    var url = 'https://'+MICROCMS_DOMAIN+'.microcms.io/api/v1/news?limit=5&orders=-date&fields=title,date,tag,image&_='+Date.now();
+    /* fields= は指定しない（＝全項目を取得）。
+       fields で項目を絞ると、microCMS管理画面であとから項目を追加しても
+       APIレスポンスから除外されてしまい、サイトに永久に反映されなくなるため。
+       キャッシュ回避は _= のクエリパラメータのみで行う。
+       ※ ヘッダーは X-MICROCMS-API-KEY 以外を絶対に追加しないこと。
+          Cache-Control などを足すと microCMS の CORS プリフライトで
+          ブラウザがリクエスト自体をブロックする（curlでは再現しない）。 */
+    var url = 'https://'+MICROCMS_DOMAIN+'.microcms.io/api/v1/news?limit=5&orders=-date&_='+Date.now();
     fetch(url, {
       headers:{
         'X-MICROCMS-API-KEY': MICROCMS_API_KEY,
@@ -1469,13 +1538,6 @@ footer::before{
 
 })();
 </script>
-<!-- ==================== IMAGE MODAL ==================== -->
-<div class="img-modal" id="imgModal" role="dialog" aria-modal="true" aria-label="画像を拡大表示">
-  <div class="img-modal-inner" id="imgModalInner">
-    <img id="imgModalImg" src="" alt="">
-    <button class="img-modal-close" id="imgModalClose" aria-label="閉じる">✕</button>
-  </div>
-</div>
 
 </body>
 </html>
