@@ -393,7 +393,7 @@ nav.primary-nav a.is-active::after{ right:0; }
 .news-list{ border-top:1px solid var(--c-line); }
 .news-item{
   display:grid;
-  grid-template-columns:64px 1fr;
+  grid-template-columns:64px 1fr auto;
   align-items:center; gap:16px; padding:20px 8px;
   border-bottom:1px solid var(--c-line);
   position:relative;
@@ -414,6 +414,21 @@ li.news-item:hover{
 }
 a.news-item:hover::before,
 li.news-item:hover::before{ opacity:1; }
+
+/* 行全体を覆うリンク ＝ お知らせ単体ページ（news.html?id=…）への動線。
+   サムネイル（.news-thumb / z-index:3）と「さらに表示」は、
+   このオーバーレイより上に置くことで従来どおり個別に押せるようにしている。 */
+.news-item-link{
+  position:absolute; inset:0; z-index:2;
+  border-radius:inherit;
+}
+/* 右端の矢印 — 「押せる行」であることを、ホバーできないスマホにも伝える */
+.news-item-arrow{
+  font-family:var(--font-en); font-size:17px;
+  color:var(--c-gold); opacity:0.5;
+  transition:opacity .3s var(--ease), transform .3s var(--ease);
+}
+li.news-item:hover .news-item-arrow{ opacity:1; transform:translateX(4px); }
 
 /* サムネイル ＝ 唯一のタップ対象（拡大表示）
    ホバーできないスマホでも「押せる」と伝わるよう、
@@ -488,7 +503,8 @@ li.news-item:hover::before{ opacity:1; }
   transition:color .28s;
   overflow-wrap:break-word;
 }
-a.news-item:hover h3{ color:var(--c-charcoal); }
+a.news-item:hover h3,
+li.news-item:hover h3{ color:var(--c-gold-deep); }
 
 /* 本文・説明文（microCMS側に任意のフリーテキスト項目が追加された場合のみ表示） */
 .news-item-desc{
@@ -509,6 +525,8 @@ a.news-item:hover h3{ color:var(--c-charcoal); }
   display:none;
   margin:4px 0 0; padding:0;
   background:none; border:none;
+  /* 行全体のリンク（.news-item-link）より前面に置き、ボタンとして押せるようにする */
+  position:relative; z-index:3;
   font-family:var(--font-sans); font-size:11.5px; letter-spacing:0.04em;
   color:var(--c-gold-deep);
   text-decoration:underline; text-underline-offset:3px;
@@ -518,6 +536,9 @@ a.news-item:hover h3{ color:var(--c-charcoal); }
 .news-desc-toggle:hover{ color:var(--c-gold); }
 .news-desc-toggle:focus-visible{ outline:2px solid var(--c-gold); outline-offset:2px; }
 .news-note{ margin-top:20px; font-size:11.5px; color:var(--c-pale); }
+
+/* お知らせ一覧ページへの導線 */
+.news-more{ display:flex; justify-content:center; margin-top:36px; }
 
 /* ---- 画像モーダル ---- */
 .img-modal{
@@ -639,6 +660,10 @@ a.news-item:hover h3{ color:var(--c-charcoal); }
   /* ブランドごとの公式カラー。HTML側でstyle="--brand-c:#xxxxxx"を指定していない
      カードは、このデフォルト（既存のゴールド）のまま変わらない */
   --brand-c: var(--c-gold);
+  /* ホバー時のグロー（光のにじみ）用の色。通常はブランドカラーと同じだが、
+     公式色が黒などの無彩色のブランドは光って見えないため、
+     HTML側で --brand-glow だけを別の色に上書きできるようにしている */
+  --brand-glow: var(--brand-c);
   background:var(--grad-card); padding:34px 28px; min-height:220px;
   display:flex; flex-direction:column; position:relative; overflow:hidden;
   transition:background .35s var(--ease), transform .35s var(--ease-spring), box-shadow .35s var(--ease);
@@ -662,7 +687,7 @@ a.news-item:hover h3{ color:var(--c-charcoal); }
 .brand-card:active{
   background:var(--grad-card-hover);
   transform:translateY(-4px);
-  box-shadow:var(--sh-md), 0 4px 20px color-mix(in srgb, var(--brand-c) 30%, transparent);
+  box-shadow:var(--sh-md), 0 4px 20px color-mix(in srgb, var(--brand-glow) 30%, transparent);
   z-index:1;
 }
 .brand-card:hover::after,
@@ -685,7 +710,7 @@ a.news-item:hover h3{ color:var(--c-charcoal); }
   border-color:var(--brand-c);
   color:var(--brand-c);
   background:color-mix(in srgb, var(--brand-c) 14%, transparent);
-  box-shadow:0 0 12px color-mix(in srgb, var(--brand-c) 45%, transparent);
+  box-shadow:0 0 12px color-mix(in srgb, var(--brand-glow) 45%, transparent);
 }
 .brand-card h4{ font-size:15px; letter-spacing:0.03em; position:relative; display:inline-block; }
 .brand-card h4::after{
@@ -870,6 +895,9 @@ footer::before{
     grid-template-columns:52px 1fr;
     gap:12px; padding:16px 0;
   }
+  /* 狭い画面では矢印を出さない（行全体がタップ領域なのは見た目で伝わる） */
+  .news-item-arrow{ display:none; }
+  .news-more .btn{ width:100%; justify-content:center; }
   .news-thumb{ width:52px; height:52px; }
   .news-thumb::after{
     right:3px; bottom:3px; width:17px; height:17px; background-size:10px 10px;
@@ -910,6 +938,7 @@ footer::before{
       <span class="jp">コ ス メ テ ィ ッ ク &nbsp; ミ キ ヤ</span>
     </a>
     <nav class="primary-nav" aria-label="主要ナビゲーション">
+      <a href="#news" data-nav>お知らせ</a>
       <a href="#concept" data-nav>コンセプト</a>
       <a href="#brands" data-nav>ブランド</a>
       <a href="#shop" data-nav>店舗案内</a>
@@ -921,6 +950,7 @@ footer::before{
 </header>
 
 <div class="mobile-nav" id="mobileNav">
+  <a href="#news" data-nav>お知らせ</a>
   <a href="#concept" data-nav>コンセプト</a>
   <a href="#brands" data-nav>ブランド</a>
   <a href="#shop" data-nav>店舗案内</a>
@@ -964,6 +994,9 @@ footer::before{
     </div>
     <ul class="news-list reveal" id="newsList"></ul>
     <p class="news-note">※ 表示中の項目はサンプルです。本番環境では microCMS から取得した最新記事が自動的に反映されます。</p>
+    <div class="news-more reveal">
+      <a href="news.html" class="btn btn--ghost" id="newsMoreLink">お知らせ一覧を見る</a>
+    </div>
   </div>
 </section>
 
@@ -1013,42 +1046,42 @@ footer::before{
         <span class="titles"><span class="en">Shiseido</span><span class="jp">資生堂 lineup</span></span>
       </div>
       <div class="brand-grid">
-        <article class="brand-card" style="--brand-c:#C8A876;">
+        <article class="brand-card" style="--brand-c:#7D6C4F;">
           <a href="https://www.cledepeau-beaute.com/jp/" target="_blank" rel="noopener" class="brand-card-link" aria-label="クレ・ド・ポー ボーテ 公式サイト"></a>
           <span class="mark">C</span>
           <h4>クレ・ド・ポー ボーテ<span class="en-name">Clé de Peau Beauté</span></h4>
           <p>資生堂の最高峰。肌の知性を呼び覚まし、内側から輝く気品ある肌へ導くラグジュアリースキンケア＆メイクアップ。</p>
           <span class="brand-card-arrow">→</span>
         </article>
-        <article class="brand-card" style="--brand-c:#D2481F;">
+        <article class="brand-card" style="--brand-c:#E83E0B;">
           <a href="https://www.shiseido.co.jp/benefique/?srsltid=AfmBOopvcykQHzP48rBLipQwHq43OAhqLZgIphhRUCckrPqW2czUKNxH" target="_blank" rel="noopener" class="brand-card-link" aria-label="ベネフィーク 公式サイト"></a>
           <span class="mark">B</span>
           <h4>ベネフィーク<span class="en-name">BENEFIQUE</span></h4>
           <p>東洋の知恵と先進の皮膚科学を融合。肌・体・心をトータルに捉え、クリアで健やかな美しさを育むカウンセリングブランド。</p>
           <span class="brand-card-arrow">→</span>
         </article>
-        <article class="brand-card" style="--brand-c:#CC0C18;">
+        <article class="brand-card" style="--brand-c:#C81018;">
           <a href="https://inoui.shiseido.co.jp" target="_blank" rel="noopener" class="brand-card-link" aria-label="インウイ 公式サイト"></a>
           <span class="mark">I</span>
           <h4>インウイ<span class="en-name">INOUI</span></h4>
           <p>資生堂のメイクアップブランド。「素肌に宿る美しさ」をコンセプトに、肌そのものの美しさを際立たせる洗練されたカラーと処方。</p>
           <span class="brand-card-arrow">→</span>
         </article>
-        <article class="brand-card" style="--brand-c:#E3AFC0;">
+        <article class="brand-card" style="--brand-c:#784737;">
           <a href="https://www.shiseido.co.jp/elixir/index.html" target="_blank" rel="noopener" class="brand-card-link" aria-label="エリクシール 公式サイト"></a>
           <span class="mark">E</span>
           <h4>エリクシール<span class="en-name">ELIXIR</span></h4>
           <p>30代からのエイジングケア。肌に「つや玉」を輝かせ、毎日に自信をくれるスキンケアシリーズ。</p>
           <span class="brand-card-arrow">→</span>
         </article>
-        <article class="brand-card" style="--brand-c:#4C86AC;">
+        <article class="brand-card" style="--brand-c:#E60033;">
           <a href="https://maquillage.shiseido.co.jp" target="_blank" rel="noopener" class="brand-card-link" aria-label="マキアージュ 公式サイト"></a>
           <span class="mark">M</span>
           <h4>マキアージュ<span class="en-name">MAquillAGE</span></h4>
           <p>ワンランク上の「キレイな素肌」を演出する、大人向けのトレンドメイクアップブランド。</p>
           <span class="brand-card-arrow">→</span>
         </article>
-        <article class="brand-card" style="--brand-c:#A9D6E6;">
+        <article class="brand-card" style="--brand-c:#647691;">
           <a href="https://www.shiseido.co.jp/dprogram/?srsltid=AfmBOopMgPVpimP1Eq33xLDMVqdkjeCMJnA4fFMcV4qeRsdg_fey1oNn" target="_blank" rel="noopener" class="brand-card-link" aria-label="d program 公式サイト"></a>
           <span class="mark">D</span>
           <h4>d program<span class="en-name">d program</span></h4>
@@ -1065,21 +1098,21 @@ footer::before{
         <span class="titles"><span class="en">Albion</span><span class="jp">Albion lineup</span></span>
       </div>
       <div class="brand-grid">
-        <article class="brand-card" style="--brand-c:#E0C398;">
+        <article class="brand-card" style="--brand-c:#1E1A34;">
           <a href="https://albion.co.jp/site/albion/c/c10/" target="_blank" rel="noopener" class="brand-card-link" aria-label="ALBION 公式サイト"></a>
           <span class="mark">A</span>
           <h4>ALBION<span class="en-name">Albion</span></h4>
           <p>うるおいバランスを整える名品「薬用スキンコンディショナー」や、フラルネなどのエイジングケアライン。乳液先行型の独自処方で、年齢を重ねた肌を内側から整えます。</p>
           <span class="brand-card-arrow">→</span>
         </article>
-        <article class="brand-card" style="--brand-c:#6B9944;">
+        <article class="brand-card" style="--brand-c:#A39187;">
           <a href="https://albion.co.jp/site/ignis/c/c30/" target="_blank" rel="noopener" class="brand-card-link" aria-label="IGNIS 公式サイト"></a>
           <span class="mark">I</span>
           <h4>イグニス<span class="en-name">IGNIS</span></h4>
           <p>植物の力と心地よい香りで、肌本来の美しさを引き出すナチュラルスキンケアブランド。敏感な大人肌にも寄り添う穏やかな処方が特徴です。</p>
           <span class="brand-card-arrow">→</span>
         </article>
-        <article class="brand-card" style="--brand-c:#D8A29C;">
+        <article class="brand-card" style="--brand-c:#AB9753;">
           <a href="https://albion.co.jp/site/elegance/c/c20/" target="_blank" rel="noopener" class="brand-card-link" aria-label="Elegance 公式サイト"></a>
           <span class="mark">E</span>
           <h4>エレガンス<span class="en-name">Elegance</span></h4>
@@ -1096,28 +1129,28 @@ footer::before{
         <span class="titles"><span class="en">Kosé</span><span class="jp">KOSÉ lineup</span></span>
       </div>
       <div class="brand-grid">
-        <article class="brand-card" style="--brand-c:#C0546C;">
+        <article class="brand-card" style="--brand-c:#000000;--brand-glow:#C49549;">
           <a href="https://www.decorte.com/?srsltid=AfmBOoqmZth6oZ4mcEzMD2AYx4hLf9F4j3DgGVTaRFHYDGVEQWUw5rFV" target="_blank" rel="noopener" class="brand-card-link" aria-label="コスメデコルテ 公式サイト"></a>
           <span class="mark">D</span>
           <h4>コスメデコルテ<span class="en-name">DECORTÉ</span></h4>
           <p>感性を磨くプレミアムブランド。植物の力と先進テクノロジーで、肌本来の輝きを引き出すスキンケア・メイクアップ。</p>
           <span class="brand-card-arrow">→</span>
         </article>
-        <article class="brand-card" style="--brand-c:#2A4F92;">
+        <article class="brand-card" style="--brand-c:#0A2796;">
           <a href="https://sekkisei.jp/?srsltid=AfmBOorSkymteGF1WuMVenAqXhhqb7fNlFh4buj8D70YrJIGRnvg26xC" target="_blank" rel="noopener" class="brand-card-link" aria-label="雪肌精 公式サイト"></a>
           <span class="mark">S</span>
           <h4>雪肌精<span class="en-name">SEKKISEI</span></h4>
           <p>漢方美容水として誕生した透明感スキンケア。東洋ハーブの恵みで、くすみのない澄んだ素肌へ導きます。</p>
           <span class="brand-card-arrow">→</span>
         </article>
-        <article class="brand-card" style="--brand-c:#E8B8BE;">
+        <article class="brand-card" style="--brand-c:#282828;--brand-glow:#7B7A7A;">
           <a href="https://maison.kose.co.jp/site/onebykose/c/c54/?srsltid=AfmBOoqefxJofBDgI_P5yKWh05HKm0SUshxPYrQ6hqrtbqdAIiC0MIPq" target="_blank" rel="noopener" class="brand-card-link" aria-label="ONE BY KOSÉ 公式サイト"></a>
           <span class="mark">O</span>
           <h4>ONE BY KOSÉ<span class="en-name">One by Kosé</span></h4>
           <p>先進美容成分をアクティブに届ける、大人の肌のアンチエイジングラインアップ。</p>
           <span class="brand-card-arrow">→</span>
         </article>
-        <article class="brand-card" style="--brand-c:#3F8577;">
+        <article class="brand-card" style="--brand-c:#32ACAD;">
           <a href="https://www.predia.net/" target="_blank" rel="noopener" class="brand-card-link" aria-label="Predia 公式サイト"></a>
           <span class="mark">P</span>
           <h4>プレディア<span class="en-name">Predia</span></h4>
@@ -1134,14 +1167,14 @@ footer::before{
         <span class="titles"><span class="en">Kanebo</span><span class="jp">Kanebo lineup</span></span>
       </div>
       <div class="brand-grid">
-        <article class="brand-card" style="--brand-c:#A61468;">
+        <article class="brand-card" style="--brand-c:#A11261;">
           <a href="https://www.kanebo-cosmetics.jp/twany/" target="_blank" rel="noopener" class="brand-card-link" aria-label="トワニー 公式サイト"></a>
           <span class="mark">T</span>
           <h4>トワニー<span class="en-name">TWANY</span></h4>
           <p>大人の肌に贈るエイジングケア。肌の奥から活性化させるスキンケアで、ハリと輝きを長期的にサポートします。</p>
           <span class="brand-card-arrow">→</span>
         </article>
-        <article class="brand-card" style="--brand-c:#14186C;">
+        <article class="brand-card" style="--brand-c:#0E085B;">
           <a href="https://www.lissage.jp" target="_blank" rel="noopener" class="brand-card-link" aria-label="LISSAGE 公式サイト"></a>
           <span class="mark">L</span>
           <h4>リサージ<span class="en-name">LISSAGE</span></h4>
@@ -1158,21 +1191,21 @@ footer::before{
         <span class="titles"><span class="en">Specialty Brands</span><span class="jp">専門店ならではのブランド</span></span>
       </div>
       <div class="brand-grid">
-        <article class="brand-card" style="--brand-c:#3C5A28;">
+        <article class="brand-card" style="--brand-c:#51674B;">
           <a href="https://www.hinoki.co.jp" target="_blank" rel="noopener" class="brand-card-link" aria-label="ヒノキ肌粧品 公式サイト"></a>
           <span class="mark">H</span>
           <h4>ヒノキ肌粧品<span class="en-name">Hinoki</span></h4>
           <p>肌本来の力を大切に考え、健やかな肌環境へ導く薬用スキンケアブランド。敏感肌や肌トラブルに寄り添います。</p>
           <span class="brand-card-arrow">→</span>
         </article>
-        <article class="brand-card" style="--brand-c:#9CC4E8;">
+        <article class="brand-card" style="--brand-c:#839BDD;">
           <a href="https://www.cher-couleur.com" target="_blank" rel="noopener" class="brand-card-link" aria-label="シェルクルール 公式サイト"></a>
           <span class="mark">S</span>
           <h4>シェルクルール<span class="en-name">Shell Couleur</span></h4>
           <p>肌に必要なものだけを届ける、低刺激スキンケアブランド。やさしい使い心地で素肌を健やかに育みます。</p>
           <span class="brand-card-arrow">→</span>
         </article>
-        <article class="brand-card" style="--brand-c:#C89A2E;">
+        <article class="brand-card" style="--brand-c:#B49444;">
           <a href="https://www.opal-co.co.jp" target="_blank" rel="noopener" class="brand-card-link" aria-label="オパール 公式サイト"></a>
           <span class="mark">O</span>
           <h4>オパール<span class="en-name">OPAL</span></h4>
@@ -1284,6 +1317,7 @@ footer::before{
         <div>
           <h5>SITE MAP</h5>
           <ul>
+            <li><a href="news.html">お知らせ</a></li>
             <li><a href="#concept" data-nav>コンセプト</a></li>
             <li><a href="#brands"  data-nav>取り扱いブランド</a></li>
             <li><a href="#shop"    data-nav>店舗案内</a></li>
@@ -1355,7 +1389,7 @@ footer::before{
 
   /* ---- 3. アクティブナビ ---- */
   var navLinks = document.querySelectorAll('nav.primary-nav a[href^="#"]');
-  var sectionIds = ['concept','brands','shop'];
+  var sectionIds = ['news','concept','brands','shop'];
   if('IntersectionObserver' in window){
     var navObs = new IntersectionObserver(function(entries){
       entries.forEach(function(entry){
@@ -1377,6 +1411,11 @@ footer::before{
   /* ---- 5. お知らせ — microCMS API 取得 ---- */
   var MICROCMS_DOMAIN  = 'mikiyapathio';
   var MICROCMS_API_KEY = 'MQfCc3YdhLQBgNGroOwTdHDuqTZEnnMZROpf';
+
+  /* お知らせ一覧ページのファイル名。
+     記事1件のページは news.html?id=（記事ID）で開く。
+     LINE等から直接お知らせを見せたいときは、この news.html のURLを共有する。 */
+  var NEWS_PAGE = 'news.html';
 
   var FALLBACK_NEWS = [
     { title:'クレ・ド・ポー ボーテ 新作コレクション入荷のご案内',    date:'2026-06-20', tag:'新商品入荷' },
@@ -1439,7 +1478,15 @@ footer::before{
           +'<button type="button" class="news-desc-toggle" aria-expanded="false">さらに表示</button>'
         : '';
 
+      /* 行全体をお知らせ単体ページへのリンクにする。
+         microCMSから来た記事にはidがあるが、サンプル表示（FALLBACK_NEWS）には
+         idが無く開ける記事が存在しないため、その場合はリンクを付けない。 */
+      var linkHtml = item.id
+        ? '<a class="news-item-link" href="'+NEWS_PAGE+'?id='+encodeURIComponent(item.id)+'" aria-label="'+escapeHtml(title)+'（詳細を読む）"></a>'
+        : '';
+
       return '<li class="news-item">'
+        + linkHtml
         + thumbHtml
         +'<div class="news-item-body">'
           +'<div class="news-item-meta">'
@@ -1449,6 +1496,7 @@ footer::before{
           +'<h3>'+escapeHtml(title)+'</h3>'
           + descHtml
         +'</div>'
+        + (item.id ? '<span class="news-item-arrow" aria-hidden="true">→</span>' : '<span></span>')
         +'</li>';
     }).join('');
 
