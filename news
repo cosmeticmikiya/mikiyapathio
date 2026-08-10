@@ -1,0 +1,820 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>お知らせ｜cosmetic mikiya</title>
+<meta name="description" content="須磨パティオのカウンセリング化粧品専門店 cosmetic mikiya からの最新のお知らせ・新商品入荷情報・営業のご案内。">
+
+<!-- LINE等でURLを共有したときのプレビューカード用（OGP）
+     ※ 記事単体ページ（?id=...）でも、プレビューはこの共通カードが表示されます。
+        記事ごとに違うカードを出すにはサーバー側での出し分けが必要なため、
+        現在の「HTMLファイルのみ」の構成では共通カードとしています。 -->
+<meta property="og:type" content="article">
+<meta property="og:title" content="お知らせ｜cosmetic mikiya">
+<meta property="og:description" content="cosmetic mikiya からの最新のお知らせ・新商品入荷情報・営業のご案内。">
+<meta property="og:site_name" content="cosmetic mikiya">
+<meta name="twitter:card" content="summary_large_image">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Noto+Sans+JP:wght@300;400;500&family=Noto+Serif+JP:wght@400;500&display=swap" rel="stylesheet">
+<style>
+/* ================================================================
+   DESIGN TOKENS — トップページ（index.html）と同一
+================================================================ */
+:root{
+  --c-white:       #FFFFFF;
+  --c-snow:        #F9F8F6;
+  --c-ivory:       #F4F1EC;
+  --c-mist:        #EDE9E4;
+
+  --c-charcoal:    #33302D;
+  --c-dark2:       #201E1B;
+  --c-ink:         #28241F;
+  --c-mid:         #6E6762;
+  --c-pale:        #A8A09A;
+
+  --c-gold:        #C8A05A;
+  --c-gold-bright: #DDB96A;
+  --c-gold-deep:   #A07840;
+  --c-gold-lt:     rgba(200,160,90,0.12);
+  --c-gold-mid:    rgba(200,160,90,0.30);
+  --c-gold-glow:   rgba(200,160,90,0.06);
+
+  --grad-hero:     linear-gradient(145deg, #2A2724 0%, #33302D 40%, #3D3733 70%, #2E2B27 100%);
+  --grad-section:  linear-gradient(180deg, #F9F8F6 0%, #F4F1EC 100%);
+  --grad-footer:   linear-gradient(180deg, #201E1B 0%, #1A1816 100%);
+  --grad-gold:     linear-gradient(90deg, var(--c-gold-deep), var(--c-gold-bright), var(--c-gold-deep));
+  --grad-gold-v:   linear-gradient(180deg, var(--c-gold-bright), var(--c-gold-deep));
+  --grad-card:     linear-gradient(160deg, #FFFFFF 0%, #F9F8F6 100%);
+
+  --sh-sm:   0 2px 8px rgba(30,24,18,0.06), 0 1px 2px rgba(30,24,18,0.04);
+  --sh-md:   0 8px 24px rgba(30,24,18,0.08), 0 2px 6px rgba(30,24,18,0.05);
+  --sh-lg:   0 20px 48px rgba(30,24,18,0.12), 0 4px 12px rgba(30,24,18,0.06);
+  --sh-gold: 0 4px 20px rgba(200,160,90,0.18);
+
+  --c-line:    rgba(40,36,31,0.08);
+  --c-line-lt: rgba(255,255,255,0.12);
+
+  --font-serif: 'Noto Serif JP', serif;
+  --font-sans:  'Noto Sans JP', sans-serif;
+  --font-en:    'Cormorant Garamond', serif;
+
+  --hdr:  80px;
+  --maxw: 1160px;
+  --ease: cubic-bezier(.22,.61,.36,1);
+}
+
+*,*::before,*::after{ box-sizing:border-box; }
+html{ scroll-behavior:smooth; }
+body{
+  margin:0; background:var(--c-snow); color:var(--c-ink);
+  font-family:var(--font-sans); font-weight:400; line-height:1.85;
+  -webkit-font-smoothing:antialiased; overflow-x:hidden;
+}
+img,svg{ display:block; max-width:100%; }
+a{ color:inherit; text-decoration:none; }
+ul{ list-style:none; margin:0; padding:0; }
+h1,h2,h3,h4{ font-family:var(--font-serif); font-weight:500; margin:0; color:var(--c-ink); }
+p{ margin:0; }
+button{ font-family:inherit; cursor:pointer; border:none; background:none; }
+:focus-visible{ outline:2px solid var(--c-gold); outline-offset:3px; border-radius:1px; }
+
+.container{ width:100%; max-width:var(--maxw); margin:0 auto; padding:0 40px; }
+
+/* ================================================================
+   BUTTONS
+================================================================ */
+.btn{
+  display:inline-flex; align-items:center; justify-content:center; gap:9px;
+  padding:14px 32px; font-family:var(--font-sans); font-size:13px;
+  font-weight:400; letter-spacing:0.12em; min-height:50px;
+  transition:all .35s var(--ease);
+  position:relative; overflow:hidden;
+}
+.btn::before{
+  content:''; position:absolute; inset:0;
+  background:linear-gradient(160deg, rgba(255,255,255,0.08) 0%, transparent 60%);
+  pointer-events:none;
+}
+.btn--dark{
+  background:linear-gradient(145deg, #3D3733, #28241F);
+  color:var(--c-white); border:1px solid rgba(255,255,255,0.08);
+  box-shadow:var(--sh-md);
+}
+.btn--dark:hover{
+  background:linear-gradient(145deg, #4A4540, #332F2B);
+  transform:translateY(-2px); box-shadow:var(--sh-lg);
+}
+.btn--ghost{
+  background:rgba(255,255,255,0.6); backdrop-filter:blur(8px);
+  color:var(--c-ink); border:1px solid rgba(40,36,31,0.18);
+}
+.btn--ghost:hover{
+  background:var(--c-charcoal); color:var(--c-white);
+  border-color:transparent; transform:translateY(-1px);
+}
+
+/* ================================================================
+   HEADER — トップページと同じ意匠。右端は常に「トップへ戻る」動線
+================================================================ */
+header{
+  position:fixed; top:0; left:0; right:0; z-index:100;
+  height:var(--hdr); display:flex; align-items:center;
+  background:linear-gradient(180deg, rgba(42,39,36,0.98) 0%, rgba(42,39,36,0.95) 100%);
+  border-bottom:1px solid rgba(255,255,255,0.06);
+  transition:height .4s var(--ease), background .4s var(--ease), box-shadow .4s var(--ease);
+}
+header.is-scrolled{
+  height:64px;
+  background:rgba(42,39,36,0.92);
+  backdrop-filter:blur(20px) saturate(1.4);
+  -webkit-backdrop-filter:blur(20px) saturate(1.4);
+  box-shadow:0 1px 0 rgba(255,255,255,0.07), 0 4px 24px rgba(0,0,0,0.2);
+}
+header::after{
+  content:''; position:absolute; bottom:0; left:10%; right:10%; height:1px;
+  background:var(--grad-gold); opacity:0.2;
+}
+header .container{ display:flex; align-items:center; justify-content:space-between; gap:16px; }
+
+.logo{ display:flex; flex-direction:column; line-height:1; gap:8px; }
+.logo .en{
+  font-family:var(--font-en); font-style:italic; font-weight:300;
+  font-size:21px; letter-spacing:0.1em; color:var(--c-white);
+  transition:opacity .3s;
+  background:linear-gradient(90deg, rgba(255,255,255,0.95), rgba(220,200,170,0.9));
+  -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text;
+}
+.logo:hover .en{ opacity:0.75; }
+.logo .jp{
+  font-family:var(--font-sans); font-size:9px; letter-spacing:0.35em;
+  font-weight:300; color:rgba(255,255,255,0.35);
+  -webkit-text-fill-color:rgba(255,255,255,0.35);
+}
+
+/* ヘッダー右の「トップページへ戻る」— スマホでも必ず表示する主動線 */
+.back-home{
+  display:inline-flex; align-items:center; gap:9px; flex-shrink:0;
+  padding:11px 20px; min-height:44px;
+  font-size:12px; letter-spacing:0.12em; white-space:nowrap;
+  color:rgba(255,255,255,0.86);
+  background:rgba(255,255,255,0.06);
+  border:1px solid rgba(255,255,255,0.22);
+  backdrop-filter:blur(8px);
+  transition:background .3s var(--ease), border-color .3s var(--ease), transform .3s var(--ease), color .3s var(--ease);
+}
+.back-home:hover{
+  background:rgba(200,160,90,0.16);
+  border-color:var(--c-gold); color:var(--c-gold-bright);
+  transform:translateY(-1px);
+}
+.back-home .arw{ font-family:var(--font-en); font-size:15px; line-height:1; }
+
+/* ================================================================
+   PAGE HEAD — ページ上部の見出し帯
+================================================================ */
+.page-head{
+  background:var(--grad-hero); color:var(--c-white);
+  padding:calc(var(--hdr) + 56px) 0 56px;
+  position:relative; overflow:hidden;
+}
+.page-head::after{
+  content:''; position:absolute; inset:0;
+  background:radial-gradient(ellipse 60% 60% at 82% 15%, rgba(200,160,90,0.08) 0%, transparent 60%);
+  pointer-events:none;
+}
+.page-head-bg{
+  position:absolute; right:-2%; top:50%; transform:translateY(-50%);
+  font-family:var(--font-en); font-style:italic; font-weight:300;
+  font-size:clamp(90px,15vw,190px); line-height:0.85; letter-spacing:-0.03em;
+  background:linear-gradient(180deg, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0.01) 100%);
+  -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text;
+  white-space:nowrap; pointer-events:none; user-select:none;
+}
+.page-head .container{ position:relative; z-index:2; }
+.eyebrow{
+  display:inline-flex; align-items:center; gap:14px;
+  font-family:var(--font-en); font-style:italic;
+  font-size:11.5px; letter-spacing:0.38em; text-transform:uppercase;
+  color:var(--c-gold-bright); margin-bottom:18px;
+}
+.eyebrow .dash{ flex:0 0 36px; height:1px; background:var(--grad-gold); opacity:0.7; }
+.page-head h1{
+  font-family:var(--font-serif); font-weight:400; color:var(--c-white);
+  font-size:clamp(26px,4vw,40px); letter-spacing:0.06em; line-height:1.5;
+}
+.page-head .lead{
+  margin-top:18px; font-size:14px; font-weight:300; line-height:2;
+  color:rgba(255,255,255,0.5); max-width:560px;
+}
+
+/* パンくず — 現在地と戻り先を常に示す */
+.crumbs{
+  display:flex; align-items:center; flex-wrap:wrap; gap:8px;
+  font-size:11.5px; letter-spacing:0.06em; color:rgba(255,255,255,0.4);
+  margin-bottom:20px;
+}
+.crumbs a{ color:rgba(255,255,255,0.62); transition:color .25s; }
+.crumbs a:hover{ color:var(--c-gold-bright); text-decoration:underline; text-underline-offset:3px; }
+.crumbs .sep{ opacity:0.4; }
+.crumbs .current{ color:rgba(255,255,255,0.32); }
+
+/* ================================================================
+   MAIN
+================================================================ */
+main{ background:var(--grad-section); padding:72px 0 96px; min-height:52vh; }
+
+/* ---- 一覧 ---- */
+.list{ border-top:1px solid var(--c-line); }
+.entry{
+  position:relative;
+  display:grid; grid-template-columns:96px 1fr auto;
+  align-items:center; gap:20px;
+  padding:24px 8px;
+  border-bottom:1px solid var(--c-line);
+  transition:padding-left .28s var(--ease), background .28s;
+  border-radius:4px;
+}
+.entry::before{
+  content:''; position:absolute; left:0; top:0; bottom:0; width:2px;
+  background:var(--grad-gold-v); opacity:0;
+  transition:opacity .28s var(--ease); border-radius:1px;
+}
+.entry:hover{
+  padding-left:10px;
+  background:linear-gradient(90deg, var(--c-gold-glow) 0%, transparent 60%);
+}
+.entry:hover::before{ opacity:1; }
+/* カード全面を覆うリンク（記事単体ページへ） */
+.entry-link{ position:absolute; inset:0; z-index:2; border-radius:inherit; }
+
+.entry-thumb{
+  width:96px; height:96px; border-radius:4px; overflow:hidden;
+  background:var(--c-mist); border:1px solid var(--c-gold-mid);
+  transition:box-shadow .28s var(--ease), transform .28s var(--ease), border-color .28s var(--ease);
+}
+.entry:hover .entry-thumb{ box-shadow:var(--sh-gold); border-color:var(--c-gold); transform:scale(1.03); }
+.entry-thumb img{ width:100%; height:100%; object-fit:cover; }
+/* 画像なし記事のプレースホルダー — グリッド1列目を保つだけの飾り */
+.entry-thumb-empty{
+  width:96px; height:96px; border-radius:4px;
+  background:linear-gradient(160deg, var(--c-ivory), var(--c-mist));
+  border:1px solid var(--c-line);
+  display:flex; align-items:center; justify-content:center;
+  font-family:var(--font-en); font-style:italic; font-size:13px;
+  color:var(--c-pale); letter-spacing:0.1em;
+}
+.entry-body{ min-width:0; }
+.entry-meta{ display:flex; align-items:center; gap:10px; flex-wrap:wrap; margin-bottom:6px; }
+.entry-meta time{
+  font-family:var(--font-en); font-size:13px; color:var(--c-pale);
+  letter-spacing:0.06em; white-space:nowrap;
+}
+.tag{
+  flex-shrink:0; font-size:10px; letter-spacing:0.1em;
+  border:1px solid var(--c-gold-mid); padding:3px 9px;
+  color:var(--c-gold); white-space:nowrap; background:var(--c-gold-lt);
+}
+.entry h2{
+  font-family:var(--font-sans); font-size:15.5px; font-weight:400;
+  color:var(--c-ink); line-height:1.7; margin:0;
+  overflow-wrap:break-word; transition:color .28s;
+}
+.entry:hover h2{ color:var(--c-gold-deep); }
+.entry-desc{
+  margin:6px 0 0; font-size:12.5px; line-height:1.75; color:var(--c-mid);
+  overflow-wrap:break-word; word-break:break-word;
+  display:-webkit-box; -webkit-box-orient:vertical; -webkit-line-clamp:2; overflow:hidden;
+}
+.entry-arrow{
+  font-family:var(--font-en); font-size:18px; color:var(--c-gold);
+  opacity:0.5; transition:opacity .3s var(--ease), transform .3s var(--ease);
+}
+.entry:hover .entry-arrow{ opacity:1; transform:translateX(4px); }
+
+/* ---- 状態表示（読み込み中・エラー・空） ---- */
+.state{
+  padding:56px 8px; text-align:center;
+  font-size:13.5px; color:var(--c-mid); line-height:2;
+}
+.state .sub{ display:block; margin-top:6px; font-size:12px; color:var(--c-pale); }
+.notice{
+  margin-top:20px; font-size:11.5px; color:var(--c-pale);
+}
+
+/* ---- もっと見る ---- */
+.more-row{ display:flex; justify-content:center; margin-top:40px; }
+
+/* ================================================================
+   ARTICLE — 記事単体ページ
+================================================================ */
+.article{ max-width:760px; margin:0 auto; }
+.article-head{ padding-bottom:28px; border-bottom:1px solid var(--c-line); margin-bottom:36px; }
+.article-meta{ display:flex; align-items:center; gap:12px; flex-wrap:wrap; margin-bottom:14px; }
+.article-meta time{
+  font-family:var(--font-en); font-size:14px; color:var(--c-pale); letter-spacing:0.06em;
+}
+.article h1.article-title{
+  font-family:var(--font-serif); font-weight:500;
+  font-size:clamp(21px,3vw,29px); line-height:1.75; letter-spacing:0.03em;
+  color:var(--c-ink); overflow-wrap:break-word;
+}
+.article-figure{
+  margin:0 0 36px; border:1px solid var(--c-line);
+  box-shadow:var(--sh-md); background:var(--c-white); border-radius:4px; overflow:hidden;
+}
+.article-figure img{ width:100%; height:auto; }
+/* microCMSのリッチエディタ本文 */
+.article-body{ font-size:15px; line-height:2.1; color:var(--c-ink); overflow-wrap:break-word; }
+.article-body > * + *{ margin-top:1.4em; }
+.article-body h2{ font-size:20px; line-height:1.7; padding-top:0.4em; }
+.article-body h3{ font-size:17px; line-height:1.7; }
+.article-body p{ font-weight:300; color:var(--c-mid); }
+.article-body a{
+  color:var(--c-gold-deep); text-decoration:underline; text-underline-offset:3px;
+}
+.article-body a:hover{ color:var(--c-gold); }
+.article-body img{ width:100%; height:auto; border-radius:4px; }
+.article-body ul, .article-body ol{ padding-left:1.4em; }
+.article-body ul li{ list-style:disc; }
+.article-body ol li{ list-style:decimal; }
+.article-body li{ margin-bottom:0.5em; font-weight:300; color:var(--c-mid); }
+.article-body blockquote{
+  margin:0; padding:14px 20px; background:var(--c-gold-lt);
+  border-left:2px solid var(--c-gold-mid); color:var(--c-mid); font-size:14px;
+}
+.article-body table{ width:100%; border-collapse:collapse; font-size:14px; }
+.article-body th, .article-body td{ border:1px solid var(--c-line); padding:10px 12px; text-align:left; }
+
+/* 記事末尾の戻り動線 */
+.article-foot{
+  margin-top:56px; padding-top:36px; border-top:1px solid var(--c-line);
+  display:flex; gap:12px; flex-wrap:wrap; justify-content:center;
+}
+
+/* ================================================================
+   FOOTER
+================================================================ */
+footer{
+  background:var(--grad-footer); color:rgba(255,255,255,0.42);
+  padding:64px 0 28px; position:relative;
+}
+footer::before{
+  content:''; position:absolute; top:0; left:0; right:0; height:1px;
+  background:var(--grad-gold); opacity:0.25;
+}
+.footer-top{
+  display:flex; justify-content:space-between; gap:40px; flex-wrap:wrap;
+  padding-bottom:48px; border-bottom:1px solid rgba(255,255,255,0.07);
+}
+.footer-brand .en{
+  font-family:var(--font-en); font-style:italic; font-weight:300;
+  font-size:22px; letter-spacing:0.1em;
+  background:linear-gradient(90deg, rgba(255,255,255,0.92), rgba(220,190,140,0.85));
+  -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text;
+}
+.footer-brand .jp{
+  font-size:9px; letter-spacing:0.3em; color:rgba(255,255,255,0.28);
+  margin-top:10px; font-weight:300; -webkit-text-fill-color:rgba(255,255,255,0.28);
+}
+.footer-brand .brand-line{
+  width:32px; height:1px; margin-top:14px; background:var(--grad-gold); opacity:0.55;
+}
+.footer-cols{ display:flex; gap:64px; flex-wrap:wrap; }
+.footer-cols h5{
+  font-size:10px; letter-spacing:0.22em; text-transform:uppercase;
+  margin-bottom:18px; font-family:var(--font-sans); font-weight:400;
+  background:var(--grad-gold);
+  -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text;
+  opacity:0.9;
+}
+.footer-cols ul li{ margin-bottom:11px; font-size:13px; }
+.footer-cols ul li a{ transition:color .25s; }
+.footer-cols ul li a:hover{ color:rgba(255,255,255,0.85); }
+.footer-bottom{
+  display:flex; justify-content:space-between; gap:16px; flex-wrap:wrap;
+  padding-top:24px; font-size:10.5px; color:rgba(255,255,255,0.22);
+}
+
+@media (prefers-reduced-motion:reduce){
+  html{ scroll-behavior:auto; }
+  *{ transition-duration:0.01ms !important; animation-duration:0.01ms !important; }
+}
+
+/* ================================================================
+   RESPONSIVE
+================================================================ */
+@media (max-width:760px){
+  :root{ --hdr:64px; }
+  .container{ padding:0 20px; }
+  .logo .en{ font-size:18px; }
+  .logo .jp{ font-size:8px; letter-spacing:0.28em; }
+  .back-home{ padding:10px 14px; font-size:11px; letter-spacing:0.08em; }
+  .page-head{ padding:calc(var(--hdr) + 40px) 0 40px; }
+  main{ padding:48px 0 72px; }
+  .entry{
+    grid-template-columns:64px 1fr;
+    gap:14px; padding:18px 0;
+  }
+  .entry::before{ display:none; }
+  .entry:hover{ padding-left:0; }
+  .entry-thumb, .entry-thumb-empty{ width:64px; height:64px; }
+  .entry-thumb-empty{ font-size:11px; }
+  .entry h2{ font-size:14px; }
+  .entry-desc{ font-size:12px; -webkit-line-clamp:3; }
+  /* 矢印は2列レイアウトでは非表示（タップ可能なことは行全体の見た目で伝わる） */
+  .entry-arrow{ display:none; }
+  .article-foot .btn{ width:100%; }
+  .footer-top{ flex-direction:column; gap:28px; }
+  .footer-cols{ flex-direction:column; gap:24px; }
+  .footer-bottom{ flex-direction:column; gap:6px; text-align:center; }
+}
+</style>
+</head>
+<body>
+
+<!-- ==================== HEADER ==================== -->
+<header id="siteHeader">
+  <div class="container">
+    <a href="index.html" class="logo" data-home="">
+      <span class="en">cosmetic mikiya</span>
+      <span class="jp">コ ス メ テ ィ ッ ク &nbsp; ミ キ ヤ</span>
+    </a>
+    <a href="index.html" class="back-home" data-home="">
+      <span class="arw">←</span><span>トップページへ戻る</span>
+    </a>
+  </div>
+</header>
+
+<!-- ==================== PAGE HEAD ==================== -->
+<div class="page-head">
+  <span class="page-head-bg" aria-hidden="true">news</span>
+  <div class="container">
+    <nav class="crumbs" id="crumbs" aria-label="パンくずリスト">
+      <a href="index.html" data-home="">トップ</a>
+      <span class="sep">›</span>
+      <span class="current">お知らせ</span>
+    </nav>
+    <span class="eyebrow"><span class="dash"></span>NEWS</span>
+    <h1 id="pageTitle">お知らせ</h1>
+    <p class="lead" id="pageLead">
+      cosmetic mikiya からの最新情報をお届けします。<br>
+      新商品の入荷、フェアのご案内、営業に関するお知らせなど。
+    </p>
+  </div>
+</div>
+
+<!-- ==================== MAIN ==================== -->
+<main>
+  <div class="container">
+
+    <!-- 一覧表示 -->
+    <div id="listView">
+      <ul class="list" id="newsList"></ul>
+      <div class="state" id="listState">
+        お知らせを読み込んでいます…
+      </div>
+      <div class="more-row" id="moreRow" style="display:none;">
+        <button type="button" class="btn btn--ghost" id="moreBtn">さらに読み込む</button>
+      </div>
+      <p class="notice" id="listNotice" style="display:none;"></p>
+    </div>
+
+    <!-- 記事単体表示 -->
+    <article class="article" id="articleView" style="display:none;">
+      <div id="articleContent"></div>
+      <div class="article-foot">
+        <a href="news.html" class="btn btn--ghost">← お知らせ一覧へ戻る</a>
+        <a href="index.html" class="btn btn--dark" data-home="">トップページへ戻る</a>
+      </div>
+    </article>
+
+  </div>
+</main>
+
+<!-- ==================== FOOTER ==================== -->
+<footer>
+  <div class="container">
+    <div class="footer-top">
+      <div class="footer-brand">
+        <div class="en">cosmetic mikiya</div>
+        <div class="jp">コ ス メ テ ィ ッ ク &nbsp; ミ キ ヤ</div>
+        <div class="brand-line"></div>
+      </div>
+      <div class="footer-cols">
+        <div>
+          <h5>SITE MAP</h5>
+          <ul>
+            <li><a href="index.html" data-home="">トップページ</a></li>
+            <li><a href="index.html#concept" data-home="#concept">コンセプト</a></li>
+            <li><a href="index.html#brands"  data-home="#brands">取り扱いブランド</a></li>
+            <li><a href="index.html#shop"    data-home="#shop">店舗案内</a></li>
+            <li><a href="news.html">お知らせ</a></li>
+          </ul>
+        </div>
+        <div>
+          <h5>SHOP</h5>
+          <ul>
+            <li>須磨パティオ内</li>
+            <li>神戸市須磨区中落合2丁目2-1</li>
+            <li>10:00〜20:00</li>
+            <li><a href="tel:0787918055">078-791-8055</a></li>
+          </ul>
+        </div>
+        <div>
+          <h5>SOCIAL</h5>
+          <ul>
+            <li><a href="https://www.instagram.com/" target="_blank" rel="noopener">Instagram</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span id="footerYear"></span>
+      <span>須磨パティオのカウンセリング化粧品専門店</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+(function(){
+  "use strict";
+
+  /* ================================================================
+     設定
+  ================================================================ */
+  var MICROCMS_DOMAIN  = 'mikiyapathio';
+  var MICROCMS_API_KEY = 'MQfCc3YdhLQBgNGroOwTdHDuqTZEnnMZROpf';
+  var PAGE_SIZE = 20;   /* 一覧の1回あたりの取得件数 */
+
+  /* トップページのファイル名。
+     GitHub Pages等の公開環境では index.html、
+     手元のPCでファイルを直接開いたとき（file://）は cosmetic_mikiya.html を見に行く。
+     公開時のトップページのファイル名が index.html 以外の場合はここを書き換える。 */
+  var HOME_FILE = (location.protocol === 'file:') ? 'cosmetic_mikiya.html' : 'index.html';
+
+  /* data-home が付いたリンクのhrefを、上のHOME_FILEに合わせて書き換える */
+  document.querySelectorAll('[data-home]').forEach(function(a){
+    a.setAttribute('href', HOME_FILE + (a.getAttribute('data-home') || ''));
+  });
+
+  /* ================================================================
+     共通ユーティリティ
+  ================================================================ */
+  function escapeHtml(str){
+    return String(str == null ? '' : str)
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#39;');
+  }
+
+  function fmtDate(str){
+    var d = new Date(str);
+    return isNaN(d.getTime()) ? String(str || '')
+      : d.getFullYear()+'.'+String(d.getMonth()+1).padStart(2,'0')+'.'+String(d.getDate()).padStart(2,'0');
+  }
+
+  /* 本文・説明文にあたる項目名の候補。
+     microCMS側の項目名が変わっても拾えるよう、順番に探して最初の非空を使う。 */
+  var BODY_KEYS = ['body','content','detail','description','text','note'];
+
+  function pickBodyRaw(item){
+    for(var i=0; i<BODY_KEYS.length; i++){
+      var v = item[BODY_KEYS[i]];
+      if(typeof v !== 'string' && typeof v !== 'number') continue;
+      var s = String(v).trim();
+      if(s) return s;
+    }
+    return '';
+  }
+
+  /* 一覧用：HTMLタグを外した素のテキスト（抜粋表示に使う） */
+  function toPlainText(raw){
+    return String(raw || '').replace(/<[^>]*>/g, ' ').replace(/\s+/g, ' ').trim();
+  }
+
+  /* 記事本文の描画用。
+     microCMSのリッチエディタはHTML文字列で返るのでそのまま挿入し、
+     プレーンテキストの項目なら改行を<br>に変換したうえでエスケープする。 */
+  function toBodyHtml(raw){
+    if(!raw) return '';
+    var looksLikeHtml = /<\/?[a-z][\s\S]*>/i.test(raw);
+    if(looksLikeHtml) return raw;
+    return raw.split(/\n{2,}/).map(function(block){
+      return '<p>'+escapeHtml(block).replace(/\n/g,'<br>')+'</p>';
+    }).join('');
+  }
+
+  function getTag(item){
+    return item.tag || (item.category && item.category.name) || 'お知らせ';
+  }
+
+  function apiUrl(path){
+    return 'https://'+MICROCMS_DOMAIN+'.microcms.io/api/v1/news'+path
+      + (path.indexOf('?') >= 0 ? '&' : '?') + '_=' + Date.now();
+  }
+
+  /* microCMS取得の共通処理。
+     ※ ヘッダーは X-MICROCMS-API-KEY 以外を絶対に追加しないこと。
+        Cache-Control などを足すと CORS プリフライトでブラウザがブロックする。 */
+  function fetchApi(path){
+    return fetch(apiUrl(path), {
+      headers:{ 'X-MICROCMS-API-KEY': MICROCMS_API_KEY },
+      mode:'cors',
+    }).then(function(res){
+      if(!res.ok) throw new Error('HTTP '+res.status);
+      return res.json();
+    });
+  }
+
+  /* ================================================================
+     一覧表示
+  ================================================================ */
+  var listView   = document.getElementById('listView');
+  var listEl     = document.getElementById('newsList');
+  var listState  = document.getElementById('listState');
+  var listNotice = document.getElementById('listNotice');
+  var moreRow    = document.getElementById('moreRow');
+  var moreBtn    = document.getElementById('moreBtn');
+  var offset     = 0;
+
+  function entryHtml(item){
+    var title = item.title || '（タイトルなし）';
+    var date  = item.date || item.publishedAt || '';
+    var tag   = getTag(item);
+    var img   = item.image && item.image.url ? item.image.url : '';
+    var desc  = toPlainText(pickBodyRaw(item));
+
+    var thumb = img
+      ? '<div class="entry-thumb"><img src="'+escapeHtml(img)+'?w=240&h=240&fit=crop" alt="" loading="lazy"></div>'
+      : '<div class="entry-thumb-empty" aria-hidden="true">mikiya</div>';
+
+    /* idが無い記事（サンプル表示など）は詳細ページを開けないのでリンクを付けない */
+    var link = item.id
+      ? '<a class="entry-link" href="news.html?id='+encodeURIComponent(item.id)+'" aria-label="'+escapeHtml(title)+'（詳細を読む）"></a>'
+      : '';
+
+    return '<li class="entry">'
+      + link
+      + thumb
+      + '<div class="entry-body">'
+        + '<div class="entry-meta">'
+          + '<time>'+escapeHtml(fmtDate(date))+'</time>'
+          + '<span class="tag">'+escapeHtml(tag)+'</span>'
+        + '</div>'
+        + '<h2>'+escapeHtml(title)+'</h2>'
+        + (desc ? '<p class="entry-desc">'+escapeHtml(desc)+'</p>' : '')
+      + '</div>'
+      + '<span class="entry-arrow" aria-hidden="true">→</span>'
+      + '</li>';
+  }
+
+  function appendEntries(items){
+    listEl.insertAdjacentHTML('beforeend', items.map(entryHtml).join(''));
+  }
+
+  /* 取得に失敗したときのサンプル表示（ページを空にしないため） */
+  var FALLBACK_NEWS = [
+    { title:'クレ・ド・ポー ボーテ 新作コレクション入荷のご案内',    date:'2026-06-20', tag:'新商品入荷' },
+    { title:'夏のスキンケアカウンセリングフェアを開催します（〜7/31）', date:'2026-06-05', tag:'お知らせ'   },
+    { title:'須磨パティオ 設備点検にともなう臨時休業のお知らせ',       date:'2026-05-22', tag:'店休日'     },
+    { title:'リサージ 新作スキンケアライン入荷のご案内',              date:'2026-05-10', tag:'新商品入荷' },
+  ];
+
+  function loadList(){
+    moreBtn.disabled = true;
+    moreBtn.textContent = '読み込み中…';
+
+    fetchApi('/?limit='+PAGE_SIZE+'&offset='+offset+'&orders=-date')
+      .then(function(data){
+        listState.style.display = 'none';
+        listNotice.style.display = 'none';
+
+        var items = data.contents || [];
+        if(offset === 0 && !items.length){
+          listState.style.display = 'block';
+          listState.innerHTML = '現在、お知らせはありません。<span class="sub">新しい情報が入り次第、こちらに掲載します。</span>';
+          moreRow.style.display = 'none';
+          return;
+        }
+
+        appendEntries(items);
+        offset += items.length;
+
+        var total = typeof data.totalCount === 'number' ? data.totalCount : offset;
+        if(offset < total){
+          moreRow.style.display = 'flex';
+          moreBtn.disabled = false;
+          moreBtn.textContent = 'さらに読み込む（残り'+(total - offset)+'件）';
+        } else {
+          moreRow.style.display = 'none';
+        }
+      })
+      .catch(function(err){
+        console.error('microCMS news fetch failed:', err);
+        moreRow.style.display = 'none';
+        if(offset === 0){
+          /* 初回取得に失敗 — サンプルを出しつつ、状況を明示する */
+          appendEntries(FALLBACK_NEWS);
+          listState.style.display = 'none';
+          listNotice.style.display = 'block';
+          listNotice.textContent = '※ 最新のお知らせを読み込めませんでした。表示中の項目はサンプルです。通信環境をご確認のうえ、ページを再読み込みしてください。';
+        } else {
+          listNotice.style.display = 'block';
+          listNotice.textContent = '※ 続きのお知らせを読み込めませんでした。ページを再読み込みしてください。';
+        }
+      });
+  }
+
+  moreBtn.addEventListener('click', loadList);
+
+  /* ================================================================
+     記事単体表示
+  ================================================================ */
+  var articleView    = document.getElementById('articleView');
+  var articleContent = document.getElementById('articleContent');
+  var pageTitle      = document.getElementById('pageTitle');
+  var pageLead       = document.getElementById('pageLead');
+  var crumbs         = document.getElementById('crumbs');
+
+  function showArticle(id){
+    listView.style.display = 'none';
+    articleView.style.display = 'block';
+
+    /* パンくずを「トップ › お知らせ › 記事」に差し替え */
+    crumbs.innerHTML =
+      '<a href="'+escapeHtml(HOME_FILE)+'">トップ</a>'
+      + '<span class="sep">›</span>'
+      + '<a href="news.html">お知らせ</a>'
+      + '<span class="sep">›</span>'
+      + '<span class="current">記事</span>';
+
+    pageTitle.textContent = 'お知らせ';
+    pageLead.style.display = 'none';
+
+    articleContent.innerHTML = '<div class="state">記事を読み込んでいます…</div>';
+
+    fetchApi('/'+encodeURIComponent(id))
+      .then(function(item){
+        var title = item.title || '（タイトルなし）';
+        var date  = item.date || item.publishedAt || '';
+        var tag   = getTag(item);
+        var img   = item.image && item.image.url ? item.image.url : '';
+        var body  = toBodyHtml(pickBodyRaw(item));
+
+        document.title = title + '｜お知らせ｜cosmetic mikiya';
+        pageTitle.textContent = title;
+
+        articleContent.innerHTML =
+          '<div class="article-head">'
+            + '<div class="article-meta">'
+              + '<time>'+escapeHtml(fmtDate(date))+'</time>'
+              + '<span class="tag">'+escapeHtml(tag)+'</span>'
+            + '</div>'
+            + '<h1 class="article-title">'+escapeHtml(title)+'</h1>'
+          + '</div>'
+          + (img ? '<figure class="article-figure"><img src="'+escapeHtml(img)+'?w=1200" alt="'+escapeHtml(title)+'"></figure>' : '')
+          /* 本文が未登録の記事は、代わりの文言を出さずに何も表示しない */
+          + (body ? '<div class="article-body">'+body+'</div>' : '');
+      })
+      .catch(function(err){
+        console.error('microCMS article fetch failed:', err);
+        articleContent.innerHTML =
+          '<div class="state">'
+          + 'この記事を表示できませんでした。'
+          + '<span class="sub">記事が削除されたか、通信環境に問題がある可能性があります。<br>下のボタンからお知らせ一覧をご確認ください。</span>'
+          + '</div>';
+      });
+  }
+
+  /* ================================================================
+     ルーティング — ?id=xxxx があれば記事単体、無ければ一覧
+  ================================================================ */
+  var params = new URLSearchParams(location.search);
+  var articleId = params.get('id');
+
+  if(articleId){
+    showArticle(articleId);
+  } else {
+    loadList();
+  }
+
+  /* ---- ヘッダー スクロール ---- */
+  var header = document.getElementById('siteHeader');
+  function onScroll(){ header.classList.toggle('is-scrolled', window.scrollY > 20); }
+  document.addEventListener('scroll', onScroll, { passive:true });
+  onScroll();
+
+  /* ---- フッター年号 ---- */
+  var y = document.getElementById('footerYear');
+  if(y){ y.textContent = '© '+new Date().getFullYear()+' cosmetic mikiya'; }
+
+})();
+</script>
+
+</body>
+</html>
