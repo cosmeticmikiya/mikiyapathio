@@ -3,18 +3,6 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<script>
-/* URLに ?news=記事ID が付いている場合、ページ全体の読み込みを待たずに
-   最速のタイミングで <html> へクラスを付ける。これにより、下の<style>にある
-   「トップのヒーロー等を隠し、記事詳細だけを表示する」ルールが最初の描画から
-   効くようになり、一瞬ヒーロー画面が見えてしまうチラつきを防ぐ
-   （本体のロジックはbody末尾の<script>にあり、実行はこれより遅いため） */
-(function(){
-  if(/[?&]news=/.test(location.search)){
-    document.documentElement.classList.add('is-news-detail');
-  }
-})();
-</script>
 <title>cosmetic mikiya｜須磨パティオのカウンセリング化粧品専門店</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -526,13 +514,6 @@ a.news-item:hover h3{ color:var(--c-charcoal); }
 .news-item-desc a:hover{ color:var(--c-gold); }
 .news-item-desc a:focus-visible{ outline:2px solid var(--c-gold); outline-offset:2px; }
 
-/* ?news=記事ID 付きでページが開かれた瞬間から、トップページの各セクションを隠し、
-   記事詳細だけを表示する（<html class="is-news-detail"> は上の<head>内スクリプトが
-   最速のタイミングで付与する）。JS本体（body末尾）が実行されるより前から効くため、
-   フルページ読み込み時にヒーロー画面が一瞬見えてしまうチラつきが起きない */
-html.is-news-detail body > section:not(#newsDetail){ display:none; }
-html.is-news-detail #newsDetail{ display:block; }
-
 /* 実際に文章が省略されている記事だけ、JS側でis-visibleを付けて表示する */
 .news-desc-toggle{
   display:none;
@@ -547,41 +528,11 @@ html.is-news-detail #newsDetail{ display:block; }
 .news-desc-toggle:hover{ color:var(--c-gold); }
 .news-desc-toggle:focus-visible{ outline:2px solid var(--c-gold); outline-offset:2px; }
 .news-note{ margin-top:20px; font-size:11.5px; color:var(--c-pale); }
-/* お知らせカードのタイトル部分＝本物のリンク（<a href>）。
-   JSが動かない場合でも、これ自体が普通のリンクとして機能する（フォールバック） */
+/* お知らせカードのタイトル部分＝本物のリンク（<a href="news.html?id=...">）。
+   記事詳細は news.html が担当するため、ここではリンクの見た目だけを整える。 */
 .news-item-link{
   display:block; color:inherit; text-decoration:none; cursor:pointer;
 }
-
-/* ---- お知らせ 個別記事ページ ---- */
-.news-detail-back{
-  display:inline-block; margin-bottom:28px;
-  font-family:var(--font-sans); font-size:12px; letter-spacing:0.04em;
-  color:var(--c-mid); text-decoration:none;
-}
-.news-detail-back:hover{ color:var(--c-gold-deep); }
-.news-detail-meta{ display:flex; align-items:center; gap:12px; margin-bottom:16px; }
-.news-detail-meta time{ font-family:var(--font-sans); font-size:12px; color:var(--c-pale); }
-.news-detail-title{
-  font-family:var(--font-serif); font-weight:500;
-  font-size:clamp(22px,4vw,32px); line-height:1.5; color:var(--c-ink);
-  margin:0 0 28px;
-}
-.news-detail-image{ width:100%; border-radius:4px; overflow:hidden; margin-bottom:32px; background:var(--c-mist); }
-.news-detail-image img{ width:100%; height:auto; display:block; }
-.news-detail-empty{ font-family:var(--font-sans); font-size:13px; color:var(--c-mid); padding:40px 0; }
-
-/* リッチエディタ本文（記事詳細のみで使用。一覧のカードでは使わない） */
-.rich-text{ font-family:var(--font-sans); font-size:14.5px; line-height:1.9; color:var(--c-charcoal); }
-.rich-text p{ margin:0 0 1.4em; }
-.rich-text h2{ font-family:var(--font-serif); font-size:19px; font-weight:500; margin:2em 0 0.8em; color:var(--c-ink); }
-.rich-text h3{ font-family:var(--font-serif); font-size:16.5px; font-weight:500; margin:1.8em 0 0.7em; color:var(--c-ink); }
-.rich-text ul,.rich-text ol{ margin:0 0 1.4em; padding-left:1.4em; }
-.rich-text li{ margin-bottom:0.4em; }
-.rich-text a{ color:var(--c-gold-deep); text-decoration:underline; text-underline-offset:2px; overflow-wrap:anywhere; }
-.rich-text a:hover{ color:var(--c-gold); }
-.rich-text img{ max-width:100%; height:auto; margin:1.6em 0; border-radius:4px; }
-.rich-text strong{ font-weight:500; color:var(--c-ink); }
 
 /* ---- 画像モーダル ---- */
 .img-modal{
@@ -1031,16 +982,6 @@ footer::before{
   </div>
 </section>
 
-<!-- ==================== NEWS DETAIL（お知らせ 個別記事） ====================
-     お知らせカードをクリックすると、このセクションに入れ替わって表示される。
-     URLは ?news=記事ID になり、直接開いたり共有したりできる（個別ページの代わり）。 -->
-<section class="section section--tight" id="newsDetail" hidden>
-  <div class="container">
-    <a href="#news" class="news-detail-back" id="newsDetailBack">← お知らせ一覧に戻る</a>
-    <div id="newsDetailBody"></div>
-  </div>
-</section>
-
 <!-- ==================== CONCEPT ==================== -->
 <section class="section section--aqua" id="concept">
   <div class="container">
@@ -1424,13 +1365,7 @@ footer::before{
     document.body.style.overflow = open ? 'hidden' : '';
   });
   document.querySelectorAll('[data-nav]').forEach(function(a){
-    a.addEventListener('click', function(){
-      closeMobileNav();
-      /* 記事詳細を表示中にヘッダーナビをクリックした場合は、先にトップページへ戻す
-         （#concept 等は詳細表示中は隠れているため、戻さないとジャンプ先が見えない） */
-      var detail = document.getElementById('newsDetail');
-      if(detail && !detail.hidden) closeNewsDetail({ pushState:true });
-    });
+    a.addEventListener('click', closeMobileNav);
   });
 
   /* ---- 3. アクティブナビ ---- */
@@ -1546,132 +1481,6 @@ footer::before{
     return '';
   }
 
-  /* ---- 6. お知らせ 個別記事（?news=記事ID） ----
-     Next.js版のような /news/[id] という実ページは無い（ビルド工程を持たない
-     1枚のHTMLのため）。代わりに、同じページ内でクエリパラメータ ?news=ID を
-     使って「個別ページ」を再現する：URLを直接開く・共有する・ブラウザの
-     戻る/進むボタンで行き来する、がすべて成立する。 */
-  var NEWS_PARAM = 'news';
-
-  function getNewsIdFromUrl(){
-    var m = location.search.match(new RegExp('[?&]'+NEWS_PARAM+'=([^&]+)'));
-    return m ? decodeURIComponent(m[1]) : '';
-  }
-
-  function newsDetailUrl(id){
-    return location.pathname + '?' + NEWS_PARAM + '=' + encodeURIComponent(id) + location.hash;
-  }
-
-  function newsListUrl(){
-    return location.pathname + location.hash;
-  }
-
-  /* トップページの各セクション（ヒーロー・お知らせ一覧・コンセプト・
-     ブランド・Instagram・店舗情報）をまとめて取得。個別記事を開くときは
-     これらを丸ごと隠し、ヘッダー・フッターと記事本文だけを表示することで
-     「別ページを開いた」ような見た目にする */
-  function getHomeSections(){
-    return Array.prototype.slice.call(document.querySelectorAll('body > section:not(#newsDetail)'));
-  }
-
-  function showNewsList(){
-    var detailSection = document.getElementById('newsDetail');
-    if(detailSection) detailSection.hidden = true;
-    getHomeSections().forEach(function(el){ el.hidden = false; });
-  }
-
-  function showNewsDetailSection(){
-    var detailSection = document.getElementById('newsDetail');
-    getHomeSections().forEach(function(el){ el.hidden = true; });
-    if(detailSection) detailSection.hidden = false;
-  }
-
-  /* 詳細ページ本文の取り出し。一覧のpickDescription()と同じ項目名を順番に探すが、
-     こちらは省略せず全文を返す（HTMLタグを含む場合はそのままリッチテキストとして
-     描画するため、ここではタグを外さない） */
-  function pickDetailBody(item){
-    for(var i=0; i<DESC_KEYS.length; i++){
-      var v = item[DESC_KEYS[i]];
-      if(typeof v !== 'string' && typeof v !== 'number') continue;
-      var raw = String(v);
-      if(raw.trim()) return raw;
-    }
-    return '';
-  }
-
-  function renderNewsDetail(item){
-    var wrap = document.getElementById('newsDetailBody');
-    if(!wrap) return;
-    var title = item.title || '（タイトルなし）';
-    var date  = item.date  || item.publishedAt || item.publishedDate || '';
-    var tag   = item.tag   || (item.category && item.category.name) || item.category || 'お知らせ';
-    var img   = (item.image && item.image.url) || (item.eyecatch && item.eyecatch.url) || '';
-    var raw   = pickDetailBody(item);
-    /* リッチエディタ項目はHTML文字列（<p>...</p>等）で返る。タグが含まれていれば
-       そのままリッチテキストとして描画し、含まれていなければ通常の文章として
-       escapeHtml() → linkify() を通す（一覧のカードと同じ安全策） */
-    var isHtml   = /<[a-z][\s\S]*>/i.test(raw);
-    var bodyHtml = raw
-      ? (isHtml ? raw : '<p>'+linkify(escapeHtml(raw)).replace(/\n/g,'<br>')+'</p>')
-      : '<p class="news-detail-empty">本文はまだ登録されていません。</p>';
-
-    wrap.innerHTML =
-        '<div class="news-detail-meta">'
-          +'<time>'+escapeHtml(fmtDate(date))+'</time>'
-          +'<span class="news-tag">'+escapeHtml(tag)+'</span>'
-        +'</div>'
-        +'<h1 class="news-detail-title">'+escapeHtml(title)+'</h1>'
-        + (img
-            ? '<div class="news-detail-image"><img src="'+escapeHtml(img)+'" alt=""></div>'
-            : '')
-        +'<div class="rich-text">'+bodyHtml+'</div>';
-
-    document.title = title + '｜cosmetic mikiya';
-  }
-
-  function renderNewsDetailError(){
-    var wrap = document.getElementById('newsDetailBody');
-    if(!wrap) return;
-    wrap.innerHTML = '<p class="news-detail-empty">記事が見つかりませんでした。削除されたか、URLが正しくない可能性があります。</p>';
-  }
-
-  function fetchNewsDetail(id){
-    var url = 'https://'+MICROCMS_DOMAIN+'.microcms.io/api/v1/news/'+encodeURIComponent(id)+'?_='+Date.now();
-    return fetch(url, {
-      headers:{ 'X-MICROCMS-API-KEY': MICROCMS_API_KEY },
-      mode: 'cors',
-    }).then(function(res){
-      if(!res.ok) throw new Error('HTTP '+res.status);
-      return res.json();
-    });
-  }
-
-  function openNewsDetail(id, opts){
-    opts = opts || {};
-    if(!id) return;
-    showNewsDetailSection();
-    window.scrollTo({ top:0, behavior:'auto' });
-    var wrap = document.getElementById('newsDetailBody');
-    if(wrap) wrap.innerHTML = '<p class="news-detail-empty">読み込み中…</p>';
-    if(opts.pushState){
-      history.pushState({ newsId:id }, '', newsDetailUrl(id));
-    }
-    fetchNewsDetail(id)
-      .then(renderNewsDetail)
-      .catch(function(err){
-        console.error('microCMS news detail fetch failed:', err);
-        renderNewsDetailError();
-      });
-  }
-
-  function closeNewsDetail(opts){
-    opts = opts || {};
-    showNewsList();
-    if(opts.pushState){
-      history.pushState(null, '', newsListUrl());
-    }
-  }
-
   function renderNews(items){
     var list = document.getElementById('newsList');
     if(!list) return;
@@ -1704,12 +1513,10 @@ footer::before{
 
       /* 一覧のサンプルデータ（FALLBACK_NEWS）には記事IDが無いため、
          その場合はリンクにせず、見出しをそのまま表示する。
-         記事IDがある場合は本物の <a href="?news=ID"> にする。
-         これはJavaScriptに一切頼らない普通のリンクなので、
-         万一JS側の初期化が失敗していても、クリックすればブラウザが
-         そのURLへ通常通り遷移する（フォールバックとして機能する）。 */
+         記事IDがある場合は news.html（記事詳細の専用ページ）への普通のリンクにする。
+         news.html側は同じmicroCMSの記事IDを ?id= で受け取って表示する。 */
       var bodyTopHtml = id
-        ? '<a class="news-item-link" href="'+escapeHtml(newsDetailUrl(id))+'" data-news-id="'+escapeHtml(id)+'">'+metaTitleHtml+'</a>'
+        ? '<a class="news-item-link" href="news.html?id='+encodeURIComponent(id)+'">'+metaTitleHtml+'</a>'
         : metaTitleHtml;
 
       return '<li class="news-item">'
@@ -1720,17 +1527,6 @@ footer::before{
         +'</div>'
         +'</li>';
     }).join('');
-
-    /* 上のリンクは href だけで既にページ遷移するが、記事一覧のあるトップページから
-       開いた場合は、フルリロードせずその場で記事を表示するSPA的な遷移にする
-       （URL自体は同じ ?news=ID になり、直接開く・共有するのも変わらず可能） */
-    list.querySelectorAll('a.news-item-link[data-news-id]').forEach(function(a){
-      a.addEventListener('click', function(e){
-        if(e.metaKey || e.ctrlKey || e.shiftKey || e.altKey || e.button === 1) return;
-        e.preventDefault();
-        openNewsDetail(a.getAttribute('data-news-id'), { pushState:true });
-      });
-    });
 
     /* 説明文が実際に行数制限で省略されている記事だけ「さらに表示」ボタンを見せる。
        -webkit-box + -webkit-line-clamp はscrollHeight/clientHeightの差で
@@ -1772,33 +1568,6 @@ footer::before{
 
   /* フォールバックをまず即時表示（スマホでの初期表示を保証） */
   renderNews(FALLBACK_NEWS);
-
-  /* URLに ?news=記事ID が付いた状態で開かれた場合（直接アクセス・共有リンク・
-     ブラウザの再読み込み）は、一覧より先に該当記事の詳細を表示する。
-     history.pushState はしない（すでにこのURLで開かれているため） */
-  (function openInitialNewsDetail(){
-    var initialId = getNewsIdFromUrl();
-    if(initialId) openNewsDetail(initialId, { pushState:false });
-  })();
-
-  /* 詳細ページの「← お知らせ一覧に戻る」 */
-  (function(){
-    var backLink = document.getElementById('newsDetailBack');
-    if(!backLink) return;
-    backLink.addEventListener('click', function(e){
-      e.preventDefault();
-      closeNewsDetail({ pushState:true });
-      var newsSection = document.getElementById('news');
-      if(newsSection) newsSection.scrollIntoView({ block:'start' });
-    });
-  })();
-
-  /* ブラウザの「戻る/進む」ボタンで一覧⇔詳細が正しく切り替わるようにする */
-  window.addEventListener('popstate', function(){
-    var id = getNewsIdFromUrl();
-    if(id) openNewsDetail(id, { pushState:false });
-    else   closeNewsDetail({ pushState:false });
-  });
 
   (function loadNews(){
     /* fields= は指定しない（＝全項目を取得）。
