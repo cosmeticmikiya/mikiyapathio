@@ -3,6 +3,18 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<script>
+/* URLに ?news=記事ID が付いている場合、ページ全体の読み込みを待たずに
+   最速のタイミングで <html> へクラスを付ける。これにより、下の<style>にある
+   「トップのヒーロー等を隠し、記事詳細だけを表示する」ルールが最初の描画から
+   効くようになり、一瞬ヒーロー画面が見えてしまうチラつきを防ぐ
+   （本体のロジックはbody末尾の<script>にあり、実行はこれより遅いため） */
+(function(){
+  if(/[?&]news=/.test(location.search)){
+    document.documentElement.classList.add('is-news-detail');
+  }
+})();
+</script>
 <title>cosmetic mikiya｜須磨パティオのカウンセリング化粧品専門店</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -513,6 +525,13 @@ a.news-item:hover h3{ color:var(--c-charcoal); }
 }
 .news-item-desc a:hover{ color:var(--c-gold); }
 .news-item-desc a:focus-visible{ outline:2px solid var(--c-gold); outline-offset:2px; }
+
+/* ?news=記事ID 付きでページが開かれた瞬間から、トップページの各セクションを隠し、
+   記事詳細だけを表示する（<html class="is-news-detail"> は上の<head>内スクリプトが
+   最速のタイミングで付与する）。JS本体（body末尾）が実行されるより前から効くため、
+   フルページ読み込み時にヒーロー画面が一瞬見えてしまうチラつきが起きない */
+html.is-news-detail body > section:not(#newsDetail){ display:none; }
+html.is-news-detail #newsDetail{ display:block; }
 
 /* 実際に文章が省略されている記事だけ、JS側でis-visibleを付けて表示する */
 .news-desc-toggle{
