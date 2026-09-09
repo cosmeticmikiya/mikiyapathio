@@ -528,7 +528,11 @@ a.news-item:hover h3{ color:var(--c-charcoal); }
 .news-desc-toggle:hover{ color:var(--c-gold); }
 .news-desc-toggle:focus-visible{ outline:2px solid var(--c-gold); outline-offset:2px; }
 .news-note{ margin-top:20px; font-size:11.5px; color:var(--c-pale); }
-.news-item{ cursor:pointer; }
+/* お知らせカードのタイトル部分＝本物のリンク（<a href>）。
+   JSが動かない場合でも、これ自体が普通のリンクとして機能する（フォールバック） */
+.news-item-link{
+  display:block; color:inherit; text-decoration:none; cursor:pointer;
+}
 
 /* ---- お知らせ 個別記事ページ ---- */
 .news-detail-back{
@@ -1672,33 +1676,40 @@ footer::before{
           +'<button type="button" class="news-desc-toggle" aria-expanded="false">さらに表示</button>'
         : '';
 
-      /* 一覧のサンプルデータ（FALLBACK_NEWS）には記事IDが無いため、
-         その場合はタイトルをリンクにせず、カードクリックでの遷移も行わない */
-      var titleHtml = id
-        ? '<a class="news-item-link" href="'+escapeHtml(newsDetailUrl(id))+'">'+escapeHtml(title)+'</a>'
-        : escapeHtml(title);
-
-      return '<li class="news-item"'+(id ? ' data-news-id="'+escapeHtml(id)+'"' : '')+'>'
-        + thumbHtml
-        +'<div class="news-item-body">'
-          +'<div class="news-item-meta">'
+      var metaTitleHtml =
+          '<div class="news-item-meta">'
             +'<time>'+escapeHtml(fmtDate(date))+'</time>'
             +'<span class="news-tag">'+escapeHtml(tag)+'</span>'
           +'</div>'
-          +'<h3>'+titleHtml+'</h3>'
+          +'<h3>'+escapeHtml(title)+'</h3>';
+
+      /* 一覧のサンプルデータ（FALLBACK_NEWS）には記事IDが無いため、
+         その場合はリンクにせず、見出しをそのまま表示する。
+         記事IDがある場合は本物の <a href="?news=ID"> にする。
+         これはJavaScriptに一切頼らない普通のリンクなので、
+         万一JS側の初期化が失敗していても、クリックすればブラウザが
+         そのURLへ通常通り遷移する（フォールバックとして機能する）。 */
+      var bodyTopHtml = id
+        ? '<a class="news-item-link" href="'+escapeHtml(newsDetailUrl(id))+'" data-news-id="'+escapeHtml(id)+'">'+metaTitleHtml+'</a>'
+        : metaTitleHtml;
+
+      return '<li class="news-item">'
+        + thumbHtml
+        +'<div class="news-item-body">'
+          + bodyTopHtml
           + descHtml
         +'</div>'
         +'</li>';
     }).join('');
 
-    /* カードクリック（サムネイル拡大・「さらに表示」以外の部分）で記事詳細を開く */
-    list.querySelectorAll('.news-item[data-news-id]').forEach(function(li){
-      li.addEventListener('click', function(e){
-        if(e.target.closest('.news-thumb, .news-desc-toggle')) return;
-        if(window.getSelection && String(window.getSelection())) return;
-        if(e.target.closest('a.news-item-link') && (e.metaKey || e.ctrlKey || e.shiftKey || e.button === 1)) return;
+    /* 上のリンクは href だけで既にページ遷移するが、記事一覧のあるトップページから
+       開いた場合は、フルリロードせずその場で記事を表示するSPA的な遷移にする
+       （URL自体は同じ ?news=ID になり、直接開く・共有するのも変わらず可能） */
+    list.querySelectorAll('a.news-item-link[data-news-id]').forEach(function(a){
+      a.addEventListener('click', function(e){
+        if(e.metaKey || e.ctrlKey || e.shiftKey || e.altKey || e.button === 1) return;
         e.preventDefault();
-        openNewsDetail(li.getAttribute('data-news-id'), { pushState:true });
+        openNewsDetail(a.getAttribute('data-news-id'), { pushState:true });
       });
     });
 
