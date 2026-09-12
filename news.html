@@ -288,6 +288,14 @@ main{ background:var(--grad-section); padding:72px 0 96px; min-height:52vh; }
   overflow-wrap:break-word; word-break:break-word;
   display:-webkit-box; -webkit-box-orient:vertical; -webkit-line-clamp:2; overflow:hidden;
 }
+/* 抜粋文中のURLリンク。カード全体が.entry-linkで覆われているため、
+   z-indexをそれより高くしないと、リンク文字をクリックしても
+   記事ページへの遷移（カード全体のリンク）に取られてしまう */
+.entry-desc a{
+  position:relative; z-index:3;
+  color:var(--c-gold-deep); text-decoration:underline; text-underline-offset:2px;
+}
+.entry-desc a:hover{ color:var(--c-gold); }
 .entry-arrow{
   font-family:var(--font-en); font-size:18px; color:var(--c-gold);
   opacity:0.5; transition:opacity .3s var(--ease), transform .3s var(--ease);
@@ -597,15 +605,72 @@ footer::before{
     return String(raw || '').replace(/<[^>]*>/g, ' ').replace(/\s+/g, ' ').trim();
   }
 
+  /* 本文中のURL自動リンク化。
+     記事本文（プレーンテキスト・HTMLどちらも）に書かれた生のURLを、
+     クリックできる<a>タグに変換する。 */
+  /* URLに使われる一般的なASCII文字のみを対象にする。
+     [^\s<>"']+ のように「除外方式」にすると、URLの直後に空白なしで
+     日本語が続く場合（例: "https://example.com/page。です"）に
+     日本語部分まで一緒に拾ってしまうため、許可方式で厳密に絞る。 */
+  var URL_PATTERN = /https?:\/\/[A-Za-z0-9\-._~:\/?#\[\]@!$&()*+,;=%]+/g;
+  var TRAILING_PUNCT = /[。、）」』,.\)\]]+$/; /* 文末の句読点等はリンクに含めない */
+
+  function splitTrailingPunct(url){
+    var m = url.match(TRAILING_PUNCT);
+    if(!m) return { core:url, trail:'' };
+    return { core:url.slice(0, url.length - m[0].length), trail:m[0] };
+  }
+
+  /* プレーンテキストの断片を対象。escapeHtmlされていない生の文字列を受け取り、
+     URL以外はエスケープしつつ、URL部分だけ<a>タグとして埋め込む。 */
+  function escapeAndLinkify(text){
+    var out = '', lastIndex = 0, m;
+    URL_PATTERN.lastIndex = 0;
+    while((m = URL_PATTERN.exec(text))){
+      var split = splitTrailingPunct(m[0]);
+      out += escapeHtml(text.slice(lastIndex, m.index));
+      out += '<a href="'+escapeHtml(split.core)+'" target="_blank" rel="noopener">'+escapeHtml(split.core)+'</a>';
+      out += escapeHtml(split.trail);
+      lastIndex = m.index + m[0].length;
+    }
+    out += escapeHtml(text.slice(lastIndex));
+    return out;
+  }
+
+  /* 既にHTML化されたテキスト断片が対象。中身は既にエスケープ済みという前提で、
+     URL部分だけを<a>タグで包む（テキスト自体は変更しない）。 */
+  function linkifyTextRun(text){
+    return text.replace(URL_PATTERN, function(urlRaw){
+      var split = splitTrailingPunct(urlRaw);
+      return '<a href="'+split.core+'" target="_blank" rel="noopener">'+split.core+'</a>'+split.trail;
+    });
+  }
+
+  /* HTML文字列をタグとテキストに分解し、テキスト部分だけを自動リンク化する。
+     既存の<a>...</a>の中身は二重リンク化しないよう深さを追跡してスキップする。 */
+  function linkifyOutsideTags(html){
+    var parts = html.split(/(<[^>]+>)/g);
+    var depth = 0;
+    return parts.map(function(part){
+      if(/^<[^>]+>$/.test(part)){
+        if(/^<a[\s>]/i.test(part)) depth++;
+        else if(/^<\/a\s*>/i.test(part)) depth = Math.max(0, depth - 1);
+        return part;
+      }
+      return depth > 0 ? part : linkifyTextRun(part);
+    }).join('');
+  }
+
   /* 記事本文の描画用。
      microCMSのリッチエディタはHTML文字列で返るのでそのまま挿入し、
-     プレーンテキストの項目なら改行を<br>に変換したうえでエスケープする。 */
+     プレーンテキストの項目なら改行を<br>に変換したうえでエスケープする。
+     どちらの場合も、本文中の生URLは自動的にリンク化する。 */
   function toBodyHtml(raw){
     if(!raw) return '';
     var looksLikeHtml = /<\/?[a-z][\s\S]*>/i.test(raw);
-    if(looksLikeHtml) return raw;
+    if(looksLikeHtml) return linkifyOutsideTags(raw);
     return raw.split(/\n{2,}/).map(function(block){
-      return '<p>'+escapeHtml(block).replace(/\n/g,'<br>')+'</p>';
+      return '<p>'+escapeAndLinkify(block).replace(/\n/g,'<br>')+'</p>';
     }).join('');
   }
 
@@ -667,7 +732,7 @@ footer::before{
           + '<span class="tag">'+escapeHtml(tag)+'</span>'
         + '</div>'
         + '<h2>'+escapeHtml(title)+'</h2>'
-        + (desc ? '<p class="entry-desc">'+escapeHtml(desc)+'</p>' : '')
+        + (desc ? '<p class="entry-desc">'+linkifyTextRun(escapeHtml(desc))+'</p>' : '')
       + '</div>'
       + '<span class="entry-arrow" aria-hidden="true">→</span>'
       + '</li>';
