@@ -334,6 +334,69 @@ main{ background:var(--grad-section); padding:72px 0 96px; min-height:52vh; }
   box-shadow:var(--sh-md); background:var(--c-white); border-radius:4px; overflow:hidden;
 }
 .article-figure img{ width:100%; height:auto; }
+/* 追加の写真（microCMSの「複数画像」項目 images）。
+   1枚なら横幅いっぱい、2枚以上は2列。チラシや価格表も切れないよう、
+   枠の中に縮めて全体を収める（タップで拡大） */
+.article-gallery{
+  display:grid; grid-template-columns:repeat(2, minmax(0,1fr)); gap:12px;
+  margin:36px 0 0;
+}
+.article-gallery.is-single{ grid-template-columns:1fr; }
+.gallery-item{
+  display:block; width:100%; padding:0; aspect-ratio:1 / 1;
+  border:1px solid var(--c-line); border-radius:4px; overflow:hidden;
+  background:var(--c-white); box-shadow:var(--sh-sm); cursor:zoom-in;
+  transition:box-shadow .28s var(--ease), border-color .28s var(--ease);
+}
+.article-gallery.is-single .gallery-item{ aspect-ratio:auto; }
+.gallery-item:hover{ box-shadow:var(--sh-gold); border-color:var(--c-gold-mid); }
+.gallery-item:focus-visible{ outline:2px solid var(--c-gold); outline-offset:2px; }
+.gallery-item img{ width:100%; height:100%; object-fit:contain; }
+.article-gallery.is-single .gallery-item img{ height:auto; }
+/* メイン画像（image）も同じボタンで拡大できるようにする。見た目は従来の figure のまま */
+.gallery-item.is-main{ aspect-ratio:auto; border:0; border-radius:0; box-shadow:none; }
+.gallery-item.is-main img{ height:auto; }
+
+/* ---- 画像モーダル（トップページと同じ見た目＋前後送り） ---- */
+.img-modal{
+  display:none; position:fixed; inset:0; z-index:1000;
+  background:rgba(20,18,15,0.88);
+  backdrop-filter:blur(6px); -webkit-backdrop-filter:blur(6px);
+  align-items:center; justify-content:center;
+  padding:24px; cursor:zoom-out;
+}
+.img-modal.is-open{ display:flex; }
+.img-modal-inner{
+  position:relative; max-width:min(90vw,860px); max-height:90vh;
+  animation:modalIn .25s var(--ease) both;
+}
+@keyframes modalIn{
+  from{ opacity:0; transform:scale(0.92); }
+  to  { opacity:1; transform:scale(1); }
+}
+.img-modal-inner img{
+  display:block; max-width:100%; max-height:84vh;
+  border-radius:4px; box-shadow:0 24px 64px rgba(0,0,0,0.5);
+  object-fit:contain; cursor:default;
+}
+.img-modal-close, .img-modal-nav{
+  position:absolute; width:36px; height:36px; border-radius:50%;
+  background:var(--c-charcoal); color:rgba(255,255,255,0.85);
+  border:1px solid rgba(255,255,255,0.15);
+  display:flex; align-items:center; justify-content:center;
+  font-size:18px; cursor:pointer;
+  transition:background .2s, transform .2s;
+}
+.img-modal-close{ top:-14px; right:-14px; }
+.img-modal-nav{ top:50%; margin-top:-18px; font-family:var(--font-en); }
+.img-modal-nav.prev{ left:-18px; }
+.img-modal-nav.next{ right:-18px; }
+.img-modal-close:hover, .img-modal-nav:hover{ background:#555; transform:scale(1.1); }
+.img-modal-count{
+  position:absolute; left:0; right:0; bottom:-30px; text-align:center;
+  font-family:var(--font-en); font-size:13px; letter-spacing:0.12em;
+  color:rgba(255,255,255,0.7);
+}
 /* microCMSのリッチエディタ本文 */
 .article-body{ font-size:15px; line-height:2.1; color:var(--c-ink); overflow-wrap:break-word; }
 .article-body > * + *{ margin-top:1.4em; }
@@ -501,6 +564,18 @@ footer::before{
 
   </div>
 </main>
+
+<!-- 画像モーダル（記事の写真をタップしたときの拡大表示）。
+     スクリプトより前に置くこと（スクリプト側で getElementById するため） -->
+<div class="img-modal" id="imgModal" role="dialog" aria-modal="true" aria-label="画像を拡大表示">
+  <div class="img-modal-inner">
+    <img id="imgModalImg" src="" alt="">
+    <button type="button" class="img-modal-nav prev" id="imgModalPrev" aria-label="前の写真">‹</button>
+    <button type="button" class="img-modal-nav next" id="imgModalNext" aria-label="次の写真">›</button>
+    <button type="button" class="img-modal-close" id="imgModalClose" aria-label="閉じる">✕</button>
+    <div class="img-modal-count" id="imgModalCount"></div>
+  </div>
+</div>
 
 <!-- ==================== FOOTER ==================== -->
 <footer>
@@ -674,6 +749,27 @@ footer::before{
     }).join('');
   }
 
+  /* 写真（microCMSの「複数画像」項目）を集める。
+     項目名（image / image2 / images など）は管理画面で変わることがあるため、
+     名前では探さず「{url:...} が並んだ配列」の項目をすべて拾う（並びはmicroCMSの項目順） */
+  function pickImages(item){
+    var urls = [];
+    Object.keys(item).forEach(function(k){
+      var v = item[k];
+      if(!Array.isArray(v)) return;
+      v.forEach(function(m){
+        if(m && typeof m.url === 'string' && /^https?:\/\//.test(m.url)) urls.push(m.url);
+      });
+    });
+    return urls;
+  }
+
+  /* 一覧のサムネイル用：メイン画像（image）が無ければ追加写真の1枚目 */
+  function pickThumb(item){
+    if(item.image && item.image.url) return item.image.url;
+    return pickImages(item)[0] || '';
+  }
+
   function getTag(item){
     return item.tag || (item.category && item.category.name) || 'お知らせ';
   }
@@ -711,7 +807,7 @@ footer::before{
     var title = item.title || '（タイトルなし）';
     var date  = item.date || item.publishedAt || '';
     var tag   = getTag(item);
-    var img   = item.image && item.image.url ? item.image.url : '';
+    var img   = pickThumb(item);
     var desc  = toPlainText(pickBodyRaw(item));
 
     var thumb = img
@@ -830,6 +926,22 @@ footer::before{
         var tag   = getTag(item);
         var img   = item.image && item.image.url ? item.image.url : '';
         var body  = toBodyHtml(pickBodyRaw(item));
+        var photos = pickImages(item);
+
+        /* 拡大表示で前後に送れる順番：メイン画像 → 追加写真 */
+        galleryUrls = (img ? [img] : []).concat(photos);
+        var photoOffset = img ? 1 : 0;
+
+        var galleryHtml = photos.length
+          ? '<div class="article-gallery'+(photos.length === 1 ? ' is-single' : '')+'">'
+            + photos.map(function(url, i){
+                var size = photos.length === 1 ? '?w=1200' : '?w=800';
+                return '<button type="button" class="gallery-item" data-index="'+(i + photoOffset)+'" aria-label="写真'+(i+1)+'を拡大する">'
+                  + '<img src="'+escapeHtml(url)+size+'" alt="'+escapeHtml(title)+'（写真'+(i+1)+'）" loading="lazy">'
+                  + '</button>';
+              }).join('')
+            + '</div>'
+          : '';
 
         document.title = title + '｜お知らせ｜cosmetic mikiya';
         pageTitle.textContent = title;
@@ -842,9 +954,10 @@ footer::before{
             + '</div>'
             + '<h1 class="article-title">'+escapeHtml(title)+'</h1>'
           + '</div>'
-          + (img ? '<figure class="article-figure"><img src="'+escapeHtml(img)+'?w=1200" alt="'+escapeHtml(title)+'"></figure>' : '')
+          + (img ? '<figure class="article-figure"><button type="button" class="gallery-item is-main" data-index="0" aria-label="画像を拡大する"><img src="'+escapeHtml(img)+'?w=1200" alt="'+escapeHtml(title)+'"></button></figure>' : '')
           /* 本文が未登録の記事は、代わりの文言を出さずに何も表示しない */
-          + (body ? '<div class="article-body">'+body+'</div>' : '');
+          + (body ? '<div class="article-body">'+body+'</div>' : '')
+          + galleryHtml;
       })
       .catch(function(err){
         console.error('microCMS article fetch failed:', err);
@@ -855,6 +968,71 @@ footer::before{
           + '</div>';
       });
   }
+
+  /* ================================================================
+     画像の拡大表示 — 記事内の写真をタップで開き、‹ › ・左右キー・スワイプで前後に送る
+  ================================================================ */
+  var galleryUrls = [];
+  var modalIndex  = 0;
+  var modal       = document.getElementById('imgModal');
+  var modalImg    = document.getElementById('imgModalImg');
+  var modalPrev   = document.getElementById('imgModalPrev');
+  var modalNext   = document.getElementById('imgModalNext');
+  var modalCount  = document.getElementById('imgModalCount');
+
+  function showModalImage(i){
+    var n = galleryUrls.length;
+    if(!n) return;
+    modalIndex = (i + n) % n;
+    modalImg.src = galleryUrls[modalIndex] + '?w=1600';
+    var multi = n > 1;
+    modalPrev.style.display = multi ? '' : 'none';
+    modalNext.style.display = multi ? '' : 'none';
+    modalCount.textContent  = multi ? (modalIndex + 1) + ' / ' + n : '';
+  }
+
+  function openModal(i){
+    showModalImage(i);
+    modal.classList.add('is-open');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeModal(){
+    modal.classList.remove('is-open');
+    document.body.style.overflow = '';
+    /* 次に開いたとき前の画像が一瞬見えないようリセット */
+    setTimeout(function(){ modalImg.src = ''; }, 300);
+  }
+
+  /* 記事は後から描画されるので、articleContent に1つだけ登録して拾う */
+  articleContent.addEventListener('click', function(e){
+    var btn = e.target.closest('.gallery-item');
+    if(!btn) return;
+    openModal(parseInt(btn.getAttribute('data-index'), 10) || 0);
+  });
+
+  modalPrev.addEventListener('click', function(e){ e.stopPropagation(); showModalImage(modalIndex - 1); });
+  modalNext.addEventListener('click', function(e){ e.stopPropagation(); showModalImage(modalIndex + 1); });
+  document.getElementById('imgModalClose').addEventListener('click', function(e){ e.stopPropagation(); closeModal(); });
+  modal.addEventListener('click', function(e){ if(e.target === modal) closeModal(); });
+  modalImg.addEventListener('click', function(e){ e.stopPropagation(); });
+
+  document.addEventListener('keydown', function(e){
+    if(!modal.classList.contains('is-open')) return;
+    if(e.key === 'Escape') closeModal();
+    else if(e.key === 'ArrowLeft')  showModalImage(modalIndex - 1);
+    else if(e.key === 'ArrowRight') showModalImage(modalIndex + 1);
+  });
+
+  /* スマホ：左右スワイプで前後に送る */
+  var touchX = null;
+  modal.addEventListener('touchstart', function(e){ touchX = e.touches[0].clientX; }, { passive:true });
+  modal.addEventListener('touchend', function(e){
+    if(touchX === null) return;
+    var dx = e.changedTouches[0].clientX - touchX;
+    touchX = null;
+    if(Math.abs(dx) > 40 && galleryUrls.length > 1) showModalImage(modalIndex + (dx < 0 ? 1 : -1));
+  });
 
   /* ================================================================
      ルーティング — ?id=xxxx があれば記事単体、無ければ一覧
