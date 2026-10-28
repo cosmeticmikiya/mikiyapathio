@@ -1502,7 +1502,17 @@ footer::before{
       var title  = item.title || '（タイトルなし）';
       var date   = item.date  || item.publishedAt || '';
       var tag    = item.tag   || (item.category && item.category.name) || 'お知らせ';
-      var imgUrl = item.image && item.image.url ? item.image.url : '';
+      /* メイン画像が無ければ、追加写真（複数画像 images）の1枚目をサムネイルに使う */
+      /* 写真が「複数画像」項目（image2 など。項目名は問わない）に入っている場合は、その1枚目を使う */
+      var firstListImage = function(){
+        var keys = Object.keys(item);
+        for(var i=0; i<keys.length; i++){
+          var v = item[keys[i]];
+          if(Array.isArray(v) && v[0] && typeof v[0].url === 'string') return v[0].url;
+        }
+        return '';
+      };
+      var imgUrl = item.image && item.image.url ? item.image.url : firstListImage();
       var desc   = pickDescription(item);
 
       /* サムネイル：画像ありはボタン（虫めがねバッジ付き）、なしは空のプレースホルダー */
