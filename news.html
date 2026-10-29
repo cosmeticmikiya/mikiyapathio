@@ -339,7 +339,7 @@ main{ background:var(--grad-section); padding:72px 0 96px; min-height:52vh; }
    枠の中に縮めて全体を収める（タップで拡大） */
 .article-gallery{
   display:grid; grid-template-columns:repeat(2, minmax(0,1fr)); gap:12px;
-  margin:36px 0 0;
+  margin:0 0 36px;
 }
 .article-gallery.is-single{ grid-template-columns:1fr; }
 .gallery-item{
@@ -955,9 +955,9 @@ footer::before{
             + '<h1 class="article-title">'+escapeHtml(title)+'</h1>'
           + '</div>'
           + (img ? '<figure class="article-figure"><button type="button" class="gallery-item is-main" data-index="0" aria-label="画像を拡大する"><img src="'+escapeHtml(img)+'?w=1200" alt="'+escapeHtml(title)+'"></button></figure>' : '')
-          /* 本文が未登録の記事は、代わりの文言を出さずに何も表示しない */
-          + (body ? '<div class="article-body">'+body+'</div>' : '')
-          + galleryHtml;
+          /* 写真 → 文章 の順。本文が未登録の記事は、代わりの文言を出さずに何も表示しない */
+          + galleryHtml
+          + (body ? '<div class="article-body">'+body+'</div>' : '');
       })
       .catch(function(err){
         console.error('microCMS article fetch failed:', err);
